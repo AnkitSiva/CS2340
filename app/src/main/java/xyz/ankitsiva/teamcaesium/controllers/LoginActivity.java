@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import xyz.ankitsiva.teamcaesium.R;
+import xyz.ankitsiva.teamcaesium.model.UserList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +49,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
+     * Calls the user list from model
+     * Currently hard-codes user:pass as the only valid combination
+     */
+    private UserList userList = new UserList("user:pass");
+    /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "user:pass", "pass"
-    };
+    private String[] DUMMY_CREDENTIALS = userList.arrayRep();
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -338,7 +343,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
