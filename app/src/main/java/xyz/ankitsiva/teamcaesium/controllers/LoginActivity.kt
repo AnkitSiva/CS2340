@@ -1,4 +1,4 @@
-package xyz.ankitsiva.teamcaesium
+package xyz.ankitsiva.teamcaesium.controllers
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -25,6 +25,7 @@ import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
 
 import kotlinx.android.synthetic.main.activity_login.*
+import xyz.ankitsiva.teamcaesium.R
 
 /**
  * A login screen that offers login via email/password.
@@ -141,14 +142,18 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
     }
 
+    /**
+     * Is the username valid?
+     */
     private fun isEmailValid(email: String): Boolean {
-        //TODO: Replace this with your own logic
-        return email.contains("@")
+        return true
     }
 
+    /**
+     * Is the password valid?
+     */
     private fun isPasswordValid(password: String): Boolean {
-        //TODO: Replace this with your own logic
-        return password.length > 4
+        return true
     }
 
     /**
@@ -290,6 +295,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
          * A dummy authentication store containing known user names and passwords.
          * TODO: remove after connecting to a real authentication system.
          */
-        private val DUMMY_CREDENTIALS = arrayOf("foo@example.com:hello", "bar@example.com:world")
+        private val DUMMY_CREDENTIALS = arrayOf("user", "pass")
     }
 }
