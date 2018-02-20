@@ -16,17 +16,19 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".controllers.LoginActivity"
-            android:parentActivityName=".controllers.WelcomeActivity"
-            android:label="@string/action_sign_in_short">
-        </activity>
-        <activity android:name=".controllers.WelcomeActivity" >
+            android:label="@string/action_sign_in_short"
+            android:parentActivityName=".controllers.WelcomeActivity" />
+        <activity android:name=".controllers.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.MainActivity"></activity>
+        <activity android:name=".controllers.MainActivity" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:label="@string/title_activity_registration"></activity>
     </application>
 
 </manifest>
