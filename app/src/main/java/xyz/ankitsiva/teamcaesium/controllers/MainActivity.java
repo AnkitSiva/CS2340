@@ -18,5 +18,6 @@ public class MainActivity extends AppCompatActivity {
     public void logout(View view) {
         Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
+        finish();
     }
 }
