@@ -27,8 +27,13 @@
         </activity>
         <activity android:name=".controllers.MainActivity" />
         <activity
-            android:name="controllers.RegistrationActivity"
-            android:label="@string/title_activity_registration"></activity>
+            android:name=".controllers.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:parentActivityName=".controllers.WelcomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="xyz.ankitsiva.teamcaesium.controllers.WelcomeActivity" />
+        </activity>
     </application>
 
 </manifest>
