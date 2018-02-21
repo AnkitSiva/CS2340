@@ -23,4 +23,9 @@
     <string name="userType">User Type</string>
     <string name="prompt_name">Name</string>
     <string name="prompt_confirm_password">Confirm Password</string>
+    <string-array name="userTypes_array">
+        <item>user</item>
+        <item>admin</item>
+    </string-array>
+
 </resources>
