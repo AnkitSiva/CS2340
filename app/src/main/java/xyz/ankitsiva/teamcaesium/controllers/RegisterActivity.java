@@ -351,6 +351,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         private final String mName;
         private final String mConfirmPassword;
         private final String mUserType;
+        private Bundle bundle;
 
         UserLoginTask(String email, String password, String confirm, String name, String userType) {
             mEmail = email;
@@ -358,6 +359,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             mConfirmPassword = confirm;
             mName = name;
             mUserType = userType;
+            bundle = new Bundle();
         }
 
         @Override
@@ -375,6 +377,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // TODO: register the new account here.
             if (mConfirmPassword.equals(mPassword)) {
                 users.addUser(mEmail + ":" + mPassword + ":" + mName + ":" + mUserType);
+                bundle.putString("name", mName);
+                bundle.putString("userType", mUserType);
                 return true;
             }
             return false;
@@ -387,6 +391,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
             if (success) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
             } else {

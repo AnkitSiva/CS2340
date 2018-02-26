@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private String[] DUMMY_CREDENTIALS = userList.arrayRep();
+    private String[] credentials = userList.arrayRep();
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -317,10 +317,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        private Bundle bundle;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+            bundle = new Bundle();
         }
 
         @Override
@@ -334,10 +336,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
+            for (String credential : credentials) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
+                    bundle.putString("name", pieces[2]);
+                    bundle.putString("userType", pieces[3]);
                     return pieces[1].equals(mPassword);
                 }
             }
@@ -353,6 +357,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
             } else {
