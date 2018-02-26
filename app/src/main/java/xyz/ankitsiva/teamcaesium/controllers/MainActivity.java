@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         intent = getIntent();
         bundle = intent.getExtras();
         mText = findViewById(R.id.welcomeText);
-        mText.setText("Welcome " + bundle.get("name"));
+        mText.setText("Welcome " + bundle.get("name") + " - " + bundle.get("userType"));
     }
 
     public void logout(View view) {
