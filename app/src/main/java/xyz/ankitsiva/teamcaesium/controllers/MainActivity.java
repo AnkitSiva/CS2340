@@ -32,5 +32,10 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    public void viewShelterList(View view) {
+        Intent intent = new Intent(this, ShelterViewActivity.class);
+        startActivity(intent);
+    }
+
 
 }

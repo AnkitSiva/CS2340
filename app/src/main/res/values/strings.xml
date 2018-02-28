@@ -23,6 +23,8 @@
     <string name="userType">User Type</string>
     <string name="prompt_name">Name</string>
     <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="action_view_shelters">View Shelters</string>
+    <string name="default_shelter">Shelter information here</string>
     <string-array name="userTypes_array">
         <item>user</item>
         <item>admin</item>

@@ -34,6 +34,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="xyz.ankitsiva.teamcaesium.controllers.WelcomeActivity" />
         </activity>
+        <activity
+            android:name=".controllers.ShelterViewActivity"
+            android:label="@string/action_view_shelters"
+            android:parentActivityName=".controllers.MainActivity"/>
     </application>
 
 </manifest>

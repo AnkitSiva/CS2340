@@ -50,9 +50,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**
      * Calls the user list from model
-     * Currently hard-codes user:pass as the only valid combination
+     * Currently coded as username:password:name:usertype
      */
-    private UserList userList = (RegisterActivity.users == null) ? new UserList() : RegisterActivity.users;
+    private UserList userList = (RegisterActivity.users == null) ? new UserList("admin:password:creator:admin") : RegisterActivity.users;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
