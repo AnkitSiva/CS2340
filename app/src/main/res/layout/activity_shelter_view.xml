@@ -32,6 +32,7 @@
                 android:layout_height="33dp"
                 android:background="@color/Calm"
                 android:clickable="true"
+                android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -42,6 +43,7 @@
                 android:layout_height="33dp"
                 android:background="@color/Calm"
                 android:clickable="true"
+                android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -52,6 +54,7 @@
                 android:layout_height="33dp"
                 android:background="@color/Calm"
                 android:clickable="true"
+                android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -62,6 +65,7 @@
                 android:layout_height="33dp"
                 android:background="@color/Calm"
                 android:clickable="true"
+                android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -72,6 +76,7 @@
                 android:layout_height="33dp"
                 android:background="@color/Calm"
                 android:clickable="true"
+                android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -82,6 +87,7 @@
                 android:layout_height="33dp"
                 android:background="@color/Calm"
                 android:clickable="true"
+                android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -92,6 +98,7 @@
                 android:layout_height="33dp"
                 android:background="@color/Calm"
                 android:clickable="true"
+                android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />

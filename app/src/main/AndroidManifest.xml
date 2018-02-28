@@ -37,7 +37,10 @@
         <activity
             android:name=".controllers.ShelterViewActivity"
             android:label="@string/action_view_shelters"
-            android:parentActivityName=".controllers.MainActivity"/>
+            android:parentActivityName=".controllers.MainActivity" />
+        <activity
+            android:name=".controllers.ShelterContentActivity"
+            android:parentActivityName=".controllers.ShelterViewActivity"/>
     </application>
 
 </manifest>

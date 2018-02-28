@@ -25,6 +25,12 @@
     <string name="prompt_confirm_password">Confirm Password</string>
     <string name="action_view_shelters">View Shelters</string>
     <string name="default_shelter">Shelter information here</string>
+    <string name="prompt_address">Address</string>
+    <string name="prompt_capacity">Capacity</string>
+    <string name="prompt_phone">Phone #</string>
+    <string name="prompt_gender">Gender</string>
+    <string name="prompt_longitude">Longitude</string>
+    <string name="prompt_latitude">Latitude</string>
     <string-array name="userTypes_array">
         <item>user</item>
         <item>admin</item>

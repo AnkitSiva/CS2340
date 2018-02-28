@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mText;
     private Intent intent;
     private Bundle bundle;
+    private String name, userType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +24,27 @@ public class MainActivity extends AppCompatActivity {
         intent = getIntent();
         bundle = intent.getExtras();
         mText = findViewById(R.id.welcomeText);
-        mText.setText("Welcome " + bundle.get("name") + " - " + bundle.get("userType"));
+        name = (String) ((bundle == null) ?
+                "" : bundle.get("name"));
+        userType = (String) ((bundle == null) ?
+                "" : bundle.get("userType"));
+        mText.setText("Welcome " + name + " - " + userType);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("name", name);
+        outState.putString("userType", userType);
+
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        name = savedInstanceState.getString("name");
+        userType = savedInstanceState.getString("userType");
     }
 
     public void logout(View view) {
