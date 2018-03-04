@@ -30,10 +30,12 @@
                 android:id="@+id/shelter"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
-                android:background="@color/Calm"
+                android:background="@android:drawable/btn_default_small"
                 android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/zero"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -41,10 +43,12 @@
                 android:id="@+id/shelter1"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
-                android:background="@color/Calm"
+                android:background="@android:drawable/btn_default_small"
                 android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/one"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -52,10 +56,12 @@
                 android:id="@+id/shelter2"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
-                android:background="@color/Calm"
+                android:background="@android:drawable/btn_default_small"
                 android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/two"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -63,10 +69,12 @@
                 android:id="@+id/shelter3"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
-                android:background="@color/Calm"
+                android:background="@android:drawable/btn_default_small"
                 android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/three"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -74,10 +82,12 @@
                 android:id="@+id/shelter4"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
-                android:background="@color/Calm"
+                android:background="@android:drawable/btn_default_small"
                 android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/four"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -85,10 +95,12 @@
                 android:id="@+id/shelter5"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
-                android:background="@color/Calm"
+                android:background="@android:drawable/btn_default_small"
                 android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/five"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -96,10 +108,90 @@
                 android:id="@+id/shelter6"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
-                android:background="@color/Calm"
+                android:background="@android:drawable/btn_default_small"
                 android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:onClick="Contacts"
                 android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/six"
+                android:text="@string/default_shelter"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/shelter7"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="@android:drawable/btn_default_small"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:onClick="Contacts"
+                android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/seven"
+                android:text="@string/default_shelter"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/shelter8"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="@android:drawable/btn_default_small"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:onClick="Contacts"
+                android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/eight"
+                android:text="@string/default_shelter"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/shelter9"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="@android:drawable/btn_default_small"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:onClick="Contacts"
+                android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/nine"
+                android:text="@string/default_shelter"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/shelter10"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="@android:drawable/btn_default_small"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:onClick="Contacts"
+                android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/ten"
+                android:text="@string/default_shelter"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/shelter11"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="@android:drawable/btn_default_small"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:onClick="Contacts"
+                android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/eleven"
+                android:text="@string/default_shelter"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/shelter12"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="@android:drawable/btn_default_small"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:onClick="Contacts"
+                android:paddingBottom="@dimen/list_padding"
+                android:tag="@string/twelve"
                 android:text="@string/default_shelter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

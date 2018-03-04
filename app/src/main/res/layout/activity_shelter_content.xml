@@ -44,7 +44,7 @@
             tools:text="@string/prompt_capacity" />
 
         <TextView
-            android:id="@+id/ShelterPhone"
+            android:id="@+id/shelterPhone"
             android:layout_width="match_parent"
             android:layout_height="67dp"
             android:text="@string/prompt_phone"
@@ -52,14 +52,7 @@
             tools:text="@string/prompt_phone" />
 
         <TextView
-            android:id="@+id/shelterGender"
-            android:layout_width="match_parent"
-            android:layout_height="67dp"
-            android:text="@string/prompt_gender"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-        <TextView
-            android:id="@+id/ShelterLongitude"
+            android:id="@+id/shelterLongitude"
             android:layout_width="match_parent"
             android:layout_height="67dp"
             android:text="@string/prompt_longitude"
@@ -70,6 +63,20 @@
             android:layout_width="match_parent"
             android:layout_height="67dp"
             android:text="@string/prompt_latitude"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/shelterRestrictions"
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:text="@string/prompt_gender"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/shelterNotes"
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:text="@android:string/unknownName"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
