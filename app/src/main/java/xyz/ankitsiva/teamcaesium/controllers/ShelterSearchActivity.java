@@ -1,10 +1,12 @@
 package xyz.ankitsiva.teamcaesium.controllers;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,12 +21,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import xyz.ankitsiva.teamcaesium.R;
+import xyz.ankitsiva.teamcaesium.model.AgeCategories;
+import xyz.ankitsiva.teamcaesium.model.Gender;
 
+/**
+ * Created by ankitsiva on 3/4/18.
+ */
 
-public class ShelterViewActivity extends AppCompatActivity {
-
-
-    public static final String TAG = "ShelterViewActivity";
+public class ShelterSearchActivity extends AppCompatActivity{
+    public static final String TAG = "ShelterSearchActivity";
     public ArrayList<TextView> shelterViews;
     public TextView view;
     public Bundle bundle;
@@ -35,7 +40,9 @@ public class ShelterViewActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private Iterator<HashMap<String, Object>> dataIterator;
     private Iterator<TextView> viewIterator;
-    //private ArrayList<TextView> shelters = new ArrayList<TextView>();
+    private Spinner genderSpinner;
+    private Spinner ageSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +51,12 @@ public class ShelterViewActivity extends AppCompatActivity {
         shelterViews = new ArrayList<TextView>();
         initializeViews();
         viewIterator = shelterViews.iterator();
+        genderSpinner = (Spinner)  findViewById(R.id.gender);
+        ageSpinner = (Spinner) findViewById(R.id.age_category);
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, Gender.values());
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> ageAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, AgeCategories.values());
+        ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
@@ -103,6 +116,4 @@ public class ShelterViewActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
     }
-
-
 }

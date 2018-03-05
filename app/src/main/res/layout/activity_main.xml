@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.87" />
+        app:layout_constraintVertical_bias="0.899" />
 
     <TextView
         android:id="@+id/welcomeText"
@@ -50,7 +50,18 @@
         android:text="@string/action_view_shelters"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.724" />
+        app:layout_constraintVertical_bias="0.588" />
+
+    <Button
+        android:id="@+id/searchSheltersButton"
+        android:layout_width="122dp"
+        android:layout_height="50dp"
+        android:onClick="searchShelters"
+        android:text="SEARCH"
+        tools:layout_editor_absoluteX="131dp"
+        tools:layout_editor_absoluteY="338dp" />
+
 </android.support.constraint.ConstraintLayout>

@@ -58,5 +58,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void searchShelters(View view) {
+        Intent intent = new Intent(this, ShelterSearchActivity.class);
+        startActivity(intent);
+    }
+
 
 }
