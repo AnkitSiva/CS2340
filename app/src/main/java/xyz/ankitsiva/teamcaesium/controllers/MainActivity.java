@@ -62,6 +62,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ShelterSearchActivity.class);
         startActivity(intent);
     }
-
-
 }
