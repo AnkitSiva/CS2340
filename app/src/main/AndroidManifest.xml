@@ -41,6 +41,11 @@
         <activity
             android:name=".controllers.ShelterContentActivity"
             android:parentActivityName=".controllers.ShelterViewActivity"/>
+        <activity
+            android:name=".controllers.ShelterSearchActivity"
+            android:label="Search Shelters"
+            android:parentActivityName=".controllers.MainActivity"
+        />
     </application>
 
 </manifest>
