@@ -11,8 +11,9 @@
         android:layout_height="match_parent">
 
         <TableRow
+            android:id="@+id/shelterSearch"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <SearchView
                 android:layout_width="match_parent"

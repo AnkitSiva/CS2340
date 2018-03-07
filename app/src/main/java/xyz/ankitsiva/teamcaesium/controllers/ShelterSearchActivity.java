@@ -1,5 +1,7 @@
 package xyz.ankitsiva.teamcaesium.controllers;
 
+import android.app.ListActivity;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +30,8 @@ import xyz.ankitsiva.teamcaesium.model.Gender;
  * Created by ankitsiva on 3/4/18.
  */
 
-public class ShelterSearchActivity extends AppCompatActivity{
-    public static final String TAG = "ShelterSearchActivity";
+public class ShelterSearchActivity extends ListActivity {
+    public static final String TAG = ShelterSearchActivity.class.getName();
     public ArrayList<TextView> shelterViews;
     public TextView view;
     public Bundle bundle;
@@ -43,21 +45,38 @@ public class ShelterSearchActivity extends AppCompatActivity{
     private Spinner genderSpinner;
     private Spinner ageSpinner;
 
+    private void searchShelters(String query, Object ageCategory, Object gender) {
+        if (shelterList == null) {
+            throw new RuntimeException("oopsies");
+        }
+        for (HashMap<String, Object> localShelter : shelterList) {
+            if(((String) localShelter.get("Shelter Name")).contains(query)
+                    && ((String) localShelter.get("Restrictions")).contains(ageCategory.toString())
+                    && ((String) localShelter.get("Restrictions")).contains(gender.toString())) {
+                setContentView(R.layout.activity_shelter_view);
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = new Bundle();
-        setContentView(R.layout.activity_shelter_view);
-        shelterViews = new ArrayList<TextView>();
-        initializeViews();
-        viewIterator = shelterViews.iterator();
+        setContentView(R.layout.activity_shelter_search);
+        // Get the intent, verify the action and get the query
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            searchShelters(query, ageSpinner.getSelectedItem(), genderSpinner.getSelectedItem());
+        }
         genderSpinner = (Spinner)  findViewById(R.id.gender);
         ageSpinner = (Spinner) findViewById(R.id.age_category);
         ArrayAdapter<String> genderAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, Gender.values());
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(genderAdapter);
         ArrayAdapter<String> ageAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, AgeCategories.values());
         ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
+        ageSpinner.setAdapter(ageAdapter);
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
 
@@ -81,9 +100,8 @@ public class ShelterSearchActivity extends AppCompatActivity{
                 Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         });
-
     }
-
+/*
     private void initializeViews() {
         shelterViews.add((TextView) findViewById(R.id.shelter));
         shelterViews.add((TextView) findViewById(R.id.shelter1));
@@ -100,8 +118,8 @@ public class ShelterSearchActivity extends AppCompatActivity{
         shelterViews.add((TextView) findViewById(R.id.shelter12));
     }
     //Will need bundle or extras along with the Intent to pass shelter information over
-    public void Contacts(View view) {
-        int shelterNo = Integer.parseInt(view.getTag().toString());
+    public void Contacts(View listView) {
+        int shelterNo = Integer.parseInt(listView.getTag().toString());
         shelter = shelterList.get(shelterNo);
         bundle.putString("Address", (String) shelter.get("Address"));
         bundle.putString("Capacity", (String) shelter.get("Capacity"));
@@ -115,5 +133,6 @@ public class ShelterSearchActivity extends AppCompatActivity{
         Intent intent = new Intent(this, ShelterContentActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
-    }
+     }
+     */
 }

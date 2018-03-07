@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,49 +21,54 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import xyz.ankitsiva.teamcaesium.R;
+import xyz.ankitsiva.teamcaesium.model.Shelter;
 
 
 public class ShelterViewActivity extends AppCompatActivity {
 
 
-    public static final String TAG = "ShelterViewActivity";
+    public static final String TAG = ShelterViewActivity.class.getName();
     public ArrayList<TextView> shelterViews;
-    public TextView view;
+    public ListView listView;
     public Bundle bundle;
     private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private ArrayList<HashMap<String, Object>> shelterList;
+    private ArrayList<HashMap<String, Object>> dataList;
     private HashMap<String, Object> shelter;
     private DatabaseReference mDatabase;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private Iterator<TextView> viewIterator;
+    private Iterator<ListView> viewIterator;
+    private ArrayList<Shelter> shelterList;
+    private boolean isDone = false;
     //private ArrayList<TextView> shelters = new ArrayList<TextView>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bundle = new Bundle();
         setContentView(R.layout.activity_shelter_view);
-        shelterViews = new ArrayList<TextView>();
-        initializeViews();
-        viewIterator = shelterViews.iterator();
-
+        listView = findViewById(R.id.listview);
+        shelterList = new ArrayList<>();
+        //initializeViews();
+        //viewIterator = shelterViews.iterator();
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
-
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                shelterList =  dataSnapshot.getValue(t);
-                dataIterator = shelterList.iterator();
-                while (viewIterator.hasNext()) {
-                    view = viewIterator.next();
-                    shelter = dataIterator.next();
-                    view.setText((String) shelter.get("Shelter Name"));
+                dataList =  dataSnapshot.getValue(t);
+                dataIterator = dataList.iterator();
+                while (dataIterator.hasNext()) {
+                    Shelter shelter = new Shelter(dataIterator.next());
+                    shelterList.add(shelter);
+                    //dataIterator = dataIterator.next();
                 }
+                /*while (viewIterator.hasNext()) {
+                    listView = viewIterator.next();
+                    shelter = dataIterator.next();
+                    //listView.setText((String) shelter.get("Shelter Name"));
+                }*/
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
@@ -69,9 +76,11 @@ public class ShelterViewActivity extends AppCompatActivity {
             }
         });
 
+        ArrayAdapter<Shelter> shelterArrayAdapter = new ArrayAdapter<>(this, R.layout.activity_shelter_search, shelterList);
+        listView.setAdapter(shelterArrayAdapter);
     }
 
-    private void initializeViews() {
+    /*private void initializeViews() {
         shelterViews.add((TextView) findViewById(R.id.shelter));
         shelterViews.add((TextView) findViewById(R.id.shelter1));
         shelterViews.add((TextView) findViewById(R.id.shelter2));
@@ -87,8 +96,8 @@ public class ShelterViewActivity extends AppCompatActivity {
         shelterViews.add((TextView) findViewById(R.id.shelter12));
     }
     //Will need bundle or extras along with the Intent to pass shelter information over
-    public void Contacts(View view) {
-        int shelterNo = Integer.parseInt(view.getTag().toString());
+    public void Contacts(View listView) {
+        int shelterNo = Integer.parseInt(listView.getTag().toString());
         shelter = shelterList.get(shelterNo);
         bundle.putString("Address", (String) shelter.get("Address"));
         bundle.putString("Capacity", (String) shelter.get("Capacity"));
@@ -102,7 +111,7 @@ public class ShelterViewActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ShelterContentActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
-    }
+    }*/
 
 
 }

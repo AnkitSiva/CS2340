@@ -48,5 +48,5 @@
         <item>user</item>
         <item>admin</item>
     </string-array>
-
+    <string name="search_hint">Search Shelters By Name</string>
 </resources>
