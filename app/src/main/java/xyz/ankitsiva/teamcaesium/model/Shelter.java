@@ -28,6 +28,19 @@ public class Shelter {
 
     }
 
+    public Shelter(boolean ye) {
+        if(ye) {
+            this.name =
+            this.address =
+            this.capacity =
+            this.phoneNumber =
+            this.latitude =
+            this.longitude =
+            this.restrictions =
+            this.specialNotes = "Special Notes";
+        }
+    }
+
     public String getName() {
         return this.name;
     }
@@ -59,4 +72,6 @@ public class Shelter {
     public String getSpecialNotes() {
         return this.specialNotes;
     }
+
+    public String toString() {return this.getName();}
 }
