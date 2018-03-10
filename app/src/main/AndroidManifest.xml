@@ -37,6 +37,7 @@
         <activity
             android:name=".controllers.ShelterViewActivity"
             android:label="@string/action_view_shelters"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".controllers.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

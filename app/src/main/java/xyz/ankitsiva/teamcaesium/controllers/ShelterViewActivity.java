@@ -3,10 +3,13 @@ package xyz.ankitsiva.teamcaesium.controllers;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +38,7 @@ public class ShelterViewActivity extends AppCompatActivity {
     private ArrayList<Shelter> shelterList;
     private Intent intent;
     private Bundle bundle;
+    EditText inputSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,29 @@ public class ShelterViewActivity extends AppCompatActivity {
         bundle = intent.getExtras();
         listView = findViewById(R.id.listview);
         shelterList = new ArrayList<>();
+        inputSearch = (EditText) findViewById(R.id.inputSearch);
+        final ArrayAdapter<Shelter> shelterArrayAdapter = new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_list_item_1, shelterList);
+        inputSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                shelterArrayAdapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -56,8 +83,6 @@ public class ShelterViewActivity extends AppCompatActivity {
                     Shelter shelter = new Shelter(dataIterator.next());
                     shelterList.add(shelter);
                 }
-                ArrayAdapter<Shelter> shelterArrayAdapter = new ArrayAdapter<>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, shelterList);
                 listView.setAdapter(shelterArrayAdapter);
             }
             @Override
