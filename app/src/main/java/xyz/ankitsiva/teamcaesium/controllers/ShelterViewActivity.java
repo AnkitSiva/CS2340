@@ -1,8 +1,11 @@
 package xyz.ankitsiva.teamcaesium.controllers;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -49,6 +52,9 @@ public class ShelterViewActivity extends AppCompatActivity {
                     Shelter shelter = new Shelter(dataIterator.next());
                     shelterList.add(shelter);
                 }
+                ArrayAdapter<Shelter> shelterArrayAdapter = new ArrayAdapter<>(getApplicationContext(),
+                        android.R.layout.simple_list_item_1, shelterList);
+                listView.setAdapter(shelterArrayAdapter);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -57,7 +63,13 @@ public class ShelterViewActivity extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<Shelter> shelterArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, shelterList);
-        listView.setAdapter(shelterArrayAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Intent newActivity = new Intent(view.getContext(), ShelterContentActivity.class);
+                startActivity(newActivity);
+            }
+        });
+
     }
 }
