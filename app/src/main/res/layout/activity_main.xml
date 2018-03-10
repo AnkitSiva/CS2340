@@ -55,13 +55,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.588" />
 
-    <Button
-        android:id="@+id/searchSheltersButton"
-        android:layout_width="122dp"
-        android:layout_height="50dp"
-        android:onClick="searchShelters"
-        android:text="SEARCH"
-        tools:layout_editor_absoluteX="131dp"
-        tools:layout_editor_absoluteY="338dp" />
-
 </android.support.constraint.ConstraintLayout>
