@@ -33,10 +33,14 @@ public class ShelterViewActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private Iterator<HashMap<String, Object>> dataIterator;
     private ArrayList<Shelter> shelterList;
+    private Intent intent;
+    private Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shelter_view);
+        intent = getIntent();
+        bundle = intent.getExtras();
         listView = findViewById(R.id.listview);
         shelterList = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
@@ -66,8 +70,20 @@ public class ShelterViewActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent newActivity = new Intent(view.getContext(), ShelterContentActivity.class);
-                startActivity(newActivity);
+                bundle = new Bundle();
+                Shelter selectedShelter = (Shelter) parent.getItemAtPosition(position);
+                Intent intent = new Intent(getApplicationContext(), ShelterContentActivity.class);
+                bundle.putString("Address", selectedShelter.getAddress());
+                bundle.putString("Capacity", selectedShelter.getCapacity());
+                //Note: Latitude and longitude require that extra space for the key because someone messed up
+                bundle.putString("Latitude", selectedShelter.getLatitude());
+                bundle.putString("Longitude", selectedShelter.getLongitude());
+                bundle.putString("Phone Number", selectedShelter.getPhoneNumber());
+                bundle.putString("Restrictions", selectedShelter.getRestrictions());
+                bundle.putString("Shelter Name", selectedShelter.getName());
+                bundle.putString("Special Notes", selectedShelter.getSpecialNotes());
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
