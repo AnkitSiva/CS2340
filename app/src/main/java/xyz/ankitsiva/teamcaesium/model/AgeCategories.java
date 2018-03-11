@@ -5,6 +5,7 @@ package xyz.ankitsiva.teamcaesium.model;
  */
 
 public enum AgeCategories {
+    NO_PREF ("No Preference"),
     FAM_NEWBORN ("Families With Newborns"),
     CHILDREN ("Children"),
     YA ("Young Adult"),
@@ -18,4 +19,6 @@ public enum AgeCategories {
     public String toString() {
         return super.toString();
     }
+
+    public String getAgeCat() {return ageCat;}
 }

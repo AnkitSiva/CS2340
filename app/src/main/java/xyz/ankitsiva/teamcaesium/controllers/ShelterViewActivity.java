@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,11 +20,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import xyz.ankitsiva.teamcaesium.R;
+import xyz.ankitsiva.teamcaesium.model.AgeCategories;
+import xyz.ankitsiva.teamcaesium.model.Gender;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
 
 
@@ -39,18 +43,88 @@ public class ShelterViewActivity extends AppCompatActivity {
     private Intent intent;
     private Bundle bundle;
     private EditText inputSearch;
+    private Spinner ageSpinner;
+    private Spinner genderSpinner;
+    private ArrayAdapter<String> ageArrayAdapter;
+    private ArrayAdapter<String> genderArrayAdapter;
+
+    final int NUM_AGE_CATEGORIES = 5;
+    final int NUM_GENDER_CATEGORIES = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shelter_view);
         intent = getIntent();
         bundle = intent.getExtras();
+
+        setContentView(R.layout.activity_shelter_view);
+
         listView = findViewById(R.id.listview);
         shelterList = new ArrayList<>();
-        inputSearch = (EditText) findViewById(R.id.inputSearch);
-        genderAdapter
+        inputSearch = findViewById(R.id.inputSearch);
+
+        ageSpinner = findViewById(R.id.ageSpinner);
+        genderSpinner = findViewById(R.id.genderSpinner);
+
+        ArrayList<String> ageCategoryStrings = new ArrayList<>(NUM_AGE_CATEGORIES);
+        for (AgeCategories value: AgeCategories.values()) {
+            ageCategoryStrings.add(value.getAgeCat());
+        }
+
+        ArrayList<String> genderCategoryStrings = new ArrayList<>(NUM_GENDER_CATEGORIES);
+        for (Gender value: Gender.values()) {
+            genderCategoryStrings.add(value.getGender());
+        }
+
+        ageArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
+        genderArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
+
+        ageSpinner.setAdapter(ageArrayAdapter);
+        genderSpinner.setAdapter(genderArrayAdapter);
         final ArrayAdapter<Shelter> shelterArrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 android.R.layout.simple_list_item_1, shelterList);
+        ageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ArrayList<Shelter> filteredShelterList = shelterList;
+                ArrayAdapter<Shelter> filteredShelterListAdapter;
+                if (l == 0) {
+                    return;
+                } else if (l == 1) {
+                    for (Shelter shelter : shelterList) {
+                        if(shelter.getRestrictions().contains(AgeCategories.FAM_NEWBORN.getAgeCat())) {
+                            filteredShelterList.add(shelter);
+                        }
+                    }
+                } else if (l == 2) {
+                    for (Shelter shelter : shelterList) {
+                        if(shelter.getRestrictions().contains(AgeCategories.CHILDREN.getAgeCat())) {
+                            filteredShelterList.add(shelter);
+                        }
+                    }
+                }else if (l == 3) {
+                    for (Shelter shelter : shelterList) {
+                        if(shelter.getRestrictions().contains(AgeCategories.YA.getAgeCat())) {
+                            filteredShelterList.add(shelter);
+                        }
+                    }
+                }else if (l == 4) {
+                    for (Shelter shelter : shelterList) {
+                        if(shelter.getRestrictions().contains(AgeCategories.ANYONE.getAgeCat())) {
+                            filteredShelterList.add(shelter);
+                        }
+                    }
+                }
+
+                filteredShelterListAdapter = new ArrayAdapter<Shelter>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, filteredShelterList);
+                listView.setAdapter(filteredShelterListAdapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //No Change
+                return;
+            }
+        });
         inputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -62,13 +136,12 @@ public class ShelterViewActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
                                           int arg3) {
-                // TODO Auto-generated method stub
-
+                return;
             }
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
+                return;
             }
         });
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(

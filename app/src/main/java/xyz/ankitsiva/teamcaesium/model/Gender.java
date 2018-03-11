@@ -5,6 +5,7 @@ package xyz.ankitsiva.teamcaesium.model;
  */
 
 public enum Gender {
+    NO_PREF ("No Preference"),
     MALE ("Male"),
     FEMALE ("Female");
 
@@ -15,5 +16,9 @@ public enum Gender {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public String getGender() {
+        return gender;
     }
 }
