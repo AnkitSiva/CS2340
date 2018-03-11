@@ -8,6 +8,7 @@
 
     <Button
         android:id="@+id/LogoutButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="128dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -40,6 +41,7 @@
 
     <Button
         android:id="@+id/ViewSheltersButton"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

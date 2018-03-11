@@ -114,13 +114,12 @@ public class ShelterViewActivity extends AppCompatActivity {
                 ArrayList<Shelter> filteredShelterList = new ArrayList<>(backup);
                 ArrayAdapter<Shelter> filteredShelterListAdapter;
                 if (l == 0) {
-                    for (Shelter shelter: new ArrayList<Shelter>(filteredShelterList)) {
-                        if(shelter.getRestrictions().length() == 0) {
+                    for (Shelter shelter : new ArrayList<Shelter>(filteredShelterList)) {
+                        if (shelter.getRestrictions().length() == 0) {
                             filteredShelterList.remove(shelter);
                         }
                     }
-                }
-                if (l == 1) {
+                } else if (l == 1) {
                     for (Shelter shelter : new ArrayList<Shelter>(filteredShelterList)) {
                         if(!shelter.getRestrictions().contains("Fam")) {
                             filteredShelterList.remove(shelter);
@@ -163,7 +162,13 @@ public class ShelterViewActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ArrayList<Shelter> filteredShelterList = new ArrayList<>(backup);
                 ArrayAdapter<Shelter> filteredShelterListAdapter;
-                if (l == 1) {
+                if (l == 0) {
+                    for (Shelter shelter: new ArrayList<Shelter>(filteredShelterList)) {
+                        if(shelter.getRestrictions().length() == 0) {
+                            filteredShelterList.remove(shelter);
+                        }
+                    }
+                } else if (l == 1) {
                     for (Shelter shelter : new ArrayList<Shelter>(filteredShelterList)) {
                         if(!shelter.getRestrictions().contains("Men")) {
                             filteredShelterList.remove(shelter);
@@ -185,6 +190,12 @@ public class ShelterViewActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 //No Change
+                ArrayList<Shelter> filteredShelterList = new ArrayList<>(backup);
+                ArrayAdapter<Shelter> filteredShelterListAdapter;
+                filteredShelterListAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, filteredShelterList);
+                shelterArrayAdapter.remove(0);
+                shelterArrayAdapter.add(filteredShelterListAdapter);
+                listView.setAdapter(shelterArrayAdapter.get(0));
                 return;
             }
         });
