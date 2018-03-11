@@ -38,7 +38,7 @@ public class ShelterViewActivity extends AppCompatActivity {
     private ArrayList<Shelter> shelterList;
     private Intent intent;
     private Bundle bundle;
-    EditText inputSearch;
+    private EditText inputSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +48,7 @@ public class ShelterViewActivity extends AppCompatActivity {
         listView = findViewById(R.id.listview);
         shelterList = new ArrayList<>();
         inputSearch = (EditText) findViewById(R.id.inputSearch);
+        genderAdapter
         final ArrayAdapter<Shelter> shelterArrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 android.R.layout.simple_list_item_1, shelterList);
         inputSearch.addTextChangedListener(new TextWatcher() {
