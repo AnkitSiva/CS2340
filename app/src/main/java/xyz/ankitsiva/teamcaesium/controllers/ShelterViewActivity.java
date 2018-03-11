@@ -50,6 +50,7 @@ public class ShelterViewActivity extends AppCompatActivity {
 
     final int NUM_AGE_CATEGORIES = 5;
     final int NUM_GENDER_CATEGORIES = 3;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +77,8 @@ public class ShelterViewActivity extends AppCompatActivity {
             genderCategoryStrings.add(value.getGender());
         }
 
-        ageArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
-        genderArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
+        ageArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
+        genderArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
 
         ageSpinner.setAdapter(ageArrayAdapter);
         genderSpinner.setAdapter(genderArrayAdapter);
@@ -88,6 +89,7 @@ public class ShelterViewActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
+        Log.d(TAG, "onCreate: 1");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -100,6 +102,7 @@ public class ShelterViewActivity extends AppCompatActivity {
                     shelterList.add(shelter);
                 }
                 listView.setAdapter(shelterArrayAdapter.get(0));
+                Log.d(TAG, "onDataChange: 2");
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -108,37 +111,39 @@ public class ShelterViewActivity extends AppCompatActivity {
             }
         });
 
+        Log.d(TAG, "onCreate: 3");
         ageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ArrayList<Shelter> filteredShelterList = new ArrayList<>(backup);
                 ArrayAdapter<Shelter> filteredShelterListAdapter;
                 if (l == 0) {
-                    for (Shelter shelter : new ArrayList<Shelter>(filteredShelterList)) {
+                    for (Shelter shelter : new ArrayList<>(filteredShelterList)) {
                         if (shelter.getRestrictions().length() == 0) {
                             filteredShelterList.remove(shelter);
                         }
                     }
                 } else if (l == 1) {
-                    for (Shelter shelter : new ArrayList<Shelter>(filteredShelterList)) {
+                    for (Shelter shelter : new ArrayList<>(filteredShelterList)) {
                         if(!shelter.getRestrictions().contains("Fam")) {
                             filteredShelterList.remove(shelter);
                         }
                     }
                 } else if (l == 2) {
-                    for (Shelter shelter : new ArrayList<Shelter>(filteredShelterList)) {
+                    for (Shelter shelter : new ArrayList<>(filteredShelterList)) {
                         if(!shelter.getRestrictions().contains(AgeCategories.CHILDREN.getAgeCat())) {
                             filteredShelterList.remove(shelter);
                         }
                     }
                 } else if (l == 3) {
-                    for (Shelter shelter : new ArrayList<Shelter>(filteredShelterList)) {
+                    for (Shelter shelter : new ArrayList<>(filteredShelterList)) {
                         if(!shelter.getRestrictions().contains("You")) {
                             filteredShelterList.remove(shelter);
                         }
                     }
                 }
 
+                Log.d(TAG, "onItemSelected: 4");
                 filteredShelterListAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, filteredShelterList);
                 shelterArrayAdapter.remove(0);
                 shelterArrayAdapter.add(filteredShelterListAdapter);
@@ -147,6 +152,7 @@ public class ShelterViewActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+                Log.d(TAG, "onNothingSelected: 4");
                 ArrayList<Shelter> filteredShelterList = new ArrayList<>(backup);
                 ArrayAdapter<Shelter> filteredShelterListAdapter;
                 filteredShelterListAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, filteredShelterList);
@@ -163,24 +169,25 @@ public class ShelterViewActivity extends AppCompatActivity {
                 ArrayList<Shelter> filteredShelterList = new ArrayList<>(backup);
                 ArrayAdapter<Shelter> filteredShelterListAdapter;
                 if (l == 0) {
-                    for (Shelter shelter: new ArrayList<Shelter>(filteredShelterList)) {
+                    for (Shelter shelter: new ArrayList<>(filteredShelterList)) {
                         if(shelter.getRestrictions().length() == 0) {
                             filteredShelterList.remove(shelter);
                         }
                     }
                 } else if (l == 1) {
-                    for (Shelter shelter : new ArrayList<Shelter>(filteredShelterList)) {
+                    for (Shelter shelter : new ArrayList<>(filteredShelterList)) {
                         if(!shelter.getRestrictions().contains("Men")) {
                             filteredShelterList.remove(shelter);
                         }
                     }
                 } else if (l == 2) {
-                    for (Shelter shelter : new ArrayList<Shelter>(filteredShelterList)) {
+                    for (Shelter shelter : new ArrayList<>(filteredShelterList)) {
                         if (!shelter.getRestrictions().contains("Women")) {
                             filteredShelterList.remove(shelter);
                         }
                     }
                 }
+                Log.d(TAG, "onItemSelected: 5");
                 filteredShelterListAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, filteredShelterList);
                 shelterArrayAdapter.remove(0);
                 shelterArrayAdapter.add(filteredShelterListAdapter);
@@ -196,6 +203,7 @@ public class ShelterViewActivity extends AppCompatActivity {
                 shelterArrayAdapter.remove(0);
                 shelterArrayAdapter.add(filteredShelterListAdapter);
                 listView.setAdapter(shelterArrayAdapter.get(0));
+                Log.d(TAG, "onNothingSelected: 6");
                 return;
             }
         });
@@ -205,21 +213,25 @@ public class ShelterViewActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
+                Log.d(TAG, "onTextChanged: 7");
                 shelterArrayAdapter.get(0).getFilter().filter(cs);
             }
 
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
                                           int arg3) {
+                Log.d(TAG, "beforeTextChanged: 8");
                 return;
             }
 
             @Override
             public void afterTextChanged(Editable arg0) {
+                Log.d(TAG, "afterTextChanged: 8");
                 return;
             }
         });
 
+        Log.d(TAG, "onCreate: 9");
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
