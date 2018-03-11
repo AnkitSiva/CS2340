@@ -8,8 +8,7 @@ public enum AgeCategories {
     NO_PREF ("No Preference"),
     FAM_NEWBORN ("Families With Newborns"),
     CHILDREN ("Children"),
-    YA ("Young Adult"),
-    ANYONE ("Anyone");
+    YA ("Young Adult");
 
     private String ageCat;
 
