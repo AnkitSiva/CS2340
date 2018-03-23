@@ -78,5 +78,12 @@
             android:layout_height="67dp"
             android:text="@android:string/unknownName"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="claimBed"
+            android:text="@string/Claim" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -49,4 +49,9 @@
         <item>admin</item>
     </string-array>
     <string name="search_hint">Search Shelters By Name</string>
+    <string name="action_show_content">Shelter Information</string>
+    <string name="Claim">Claim Bed</string>
+    <string name="vacancy_count">Vacancies: ?</string>
+    <string name="select_number_vacancies">How many beds do you want to claim?</string>
+    <string name="claim">claim</string>
 </resources>

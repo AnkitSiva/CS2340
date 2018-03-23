@@ -37,24 +37,34 @@
         <activity
             android:name=".controllers.ShelterViewActivity"
             android:label="@string/action_view_shelters"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".controllers.MainActivity">
+            android:parentActivityName=".controllers.MainActivity"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".controllers.ShelterContentActivity"
-            android:parentActivityName=".controllers.ShelterViewActivity"/>
-        <activity android:name=".controllers.ShelterSearchActivity"
+            android:label="@string/action_show_content"
+            android:parentActivityName=".controllers.ShelterViewActivity" />
+        <activity
+            android:name=".controllers.ShelterSearchActivity"
             android:parentActivityName=".controllers.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".controllers.ClaimBedActivity"
+            android:parentActivityName=".controllers.ShelterContentActivity">
         </activity>
     </application>
 
