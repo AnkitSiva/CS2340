@@ -235,19 +235,19 @@ public class ShelterViewActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                bundle = new Bundle();
                 Shelter selectedShelter = (Shelter) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), ShelterContentActivity.class);
+                /*
                 bundle.putString("Address", selectedShelter.getAddress());
                 bundle.putString("Capacity", selectedShelter.getCapacity());
-                //Note: Latitude and longitude require that extra space for the key because someone messed up
                 bundle.putString("Latitude", selectedShelter.getLatitude());
                 bundle.putString("Longitude", selectedShelter.getLongitude());
                 bundle.putString("Phone Number", selectedShelter.getPhoneNumber());
                 bundle.putString("Restrictions", selectedShelter.getRestrictions());
                 bundle.putString("Shelter Name", selectedShelter.getName());
                 bundle.putString("Special Notes", selectedShelter.getSpecialNotes());
-                intent.putExtras(bundle);
+                */
+                intent.putExtra("Shelter", selectedShelter);
                 startActivity(intent);
             }
         });

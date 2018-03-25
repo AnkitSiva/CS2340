@@ -100,6 +100,7 @@ public class ShelterSearchActivity extends ListActivity {
                 Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         });
+        setContentView(R.layout.activity_shelter_view);
     }
 /*
     private void initializeViews() {
