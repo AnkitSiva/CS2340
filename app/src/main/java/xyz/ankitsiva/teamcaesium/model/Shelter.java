@@ -18,7 +18,7 @@ public class Shelter implements Parcelable{
     private String longitude;
     private String restrictions;
     private String specialNotes;
-    private int vacancies;
+    private Vacancy vacancies;
 
     public Shelter(HashMap<String, Object> shelter) {
         this.name = shelter.get("Shelter Name").toString();
@@ -29,7 +29,8 @@ public class Shelter implements Parcelable{
         this.longitude = shelter.get("Longitude ").toString();
         this.restrictions = shelter.get("Restrictions").toString();
         this.specialNotes = shelter.get("Special Notes").toString();
-        this.vacancies = Integer.valueOf(shelter.get("Vacancies").toString());
+        this.vacancies = new Vacancy(Integer.valueOf(shelter.get("Max Vacancies").toString()),
+                Integer.valueOf(shelter.get("Vacancies").toString()));
     }
 
     public Shelter(boolean ye) {
@@ -54,7 +55,7 @@ public class Shelter implements Parcelable{
         longitude = in.readString();
         restrictions = in.readString();
         specialNotes = in.readString();
-        vacancies = in.readInt();
+        vacancies = in.readParcelable(Vacancy.class.getClassLoader());
     }
     public int describeContents() {
         return 0;
@@ -68,7 +69,7 @@ public class Shelter implements Parcelable{
         out.writeString(longitude);
         out.writeString(restrictions);
         out.writeString(specialNotes);
-        out.writeInt(vacancies);
+        out.writeParcelable(vacancies, flags);
     }
 
     public static final Parcelable.Creator<Shelter> CREATOR
@@ -114,7 +115,7 @@ public class Shelter implements Parcelable{
         return this.specialNotes;
     }
 
-    public int getVacancies() { return this.vacancies; }
+    public Vacancy getVacancies() { return this.vacancies; }
 
     public String toString() { return this.getName();}
 }

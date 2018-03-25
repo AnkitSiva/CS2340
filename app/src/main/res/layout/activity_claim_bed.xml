@@ -32,8 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
             android:ems="10"
+            android:hint="@string/select_number_vacancies"
             android:inputType="textPersonName"
-            android:text="@string/select_number_vacancies" />
+            android:numeric="integer" />
 
         <Button
             android:id="@+id/ClaimButton"

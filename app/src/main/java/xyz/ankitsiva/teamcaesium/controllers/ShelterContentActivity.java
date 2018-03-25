@@ -1,5 +1,6 @@
 package xyz.ankitsiva.teamcaesium.controllers;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,21 +15,30 @@ import xyz.ankitsiva.teamcaesium.model.Shelter;
 
 public class ShelterContentActivity extends AppCompatActivity {
 
-    public ArrayList<TextView> viewList;
     public TextView mView;
     public Intent intent;
     public Shelter shelter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("this", "this");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shelter_content);
 
         intent = getIntent();
         shelter = intent.getParcelableExtra("Shelter");
-        viewList = new ArrayList<TextView>();
-        initializeViews();
+        if (shelter != null) {
+            initializeViews();
+        }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("hey", "hey");
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+            shelter = data.getParcelableExtra("Shelter");
+        }
+    }
     private void initializeViews() {
         mView = findViewById(R.id.shelterName);
         mView.setText("Name:    " + shelter.getName());
@@ -51,6 +61,6 @@ public class ShelterContentActivity extends AppCompatActivity {
     public void claimBed(View view) {
         Intent intent = new Intent(this, ClaimBedActivity.class);
         intent.putExtra("Shelter", shelter);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 }
