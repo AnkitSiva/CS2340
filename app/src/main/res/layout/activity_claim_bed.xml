@@ -43,6 +43,7 @@
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:layout_marginTop="20dp"
+            android:onClick="claimBed"
             android:text="@string/claim" />
 
     </LinearLayout>
