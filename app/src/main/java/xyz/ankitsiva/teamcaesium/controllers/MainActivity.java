@@ -7,27 +7,24 @@ import android.view.View;
 import android.widget.TextView;
 
 import xyz.ankitsiva.teamcaesium.R;
+import xyz.ankitsiva.teamcaesium.model.User;
 import xyz.ankitsiva.teamcaesium.model.UserList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private UserList users;
+    private User user;
     private TextView mText;
     private Intent intent;
-    private Bundle bundle;
     private String name, userType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        users = RegisterActivity.users;
         intent = getIntent();
-        bundle = intent.getExtras();
+        user = intent.getParcelableExtra("User");
         mText = findViewById(R.id.welcomeText);
-        name = (String) ((bundle == null) ?
-                "" : bundle.get("name"));
-        userType = (String) ((bundle == null) ?
-                "" : bundle.get("userType"));
+        name = user.getUsername();
+        userType = "user";
         mText.setText("Welcome " + name + " - " + userType);
     }
 

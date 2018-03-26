@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,10 +31,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
 import xyz.ankitsiva.teamcaesium.R;
+import xyz.ankitsiva.teamcaesium.model.Shelter;
+import xyz.ankitsiva.teamcaesium.model.User;
 import xyz.ankitsiva.teamcaesium.model.UserList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -52,12 +64,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Calls the user list from model
      * Currently coded as username:password:name:usertype
      */
-    private UserList userList = (RegisterActivity.users == null) ? new UserList("admin:password:creator:admin") : RegisterActivity.users;
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private String[] credentials = userList.arrayRep();
+    private DatabaseReference mDatabase;
+    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
+    private ArrayList<HashMap<String, Object>> dataList;
+    private Iterator<HashMap<String, Object>> dataIterator;
+    private ArrayList<User> userList;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -98,9 +110,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 attemptLogin();
             }
         });
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
+                "https://cs2340-49af4.firebaseio.com/");
+
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        userList = new ArrayList<>();
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                dataList = dataSnapshot.child("users").getValue(t);
+                dataIterator = dataList.iterator();
+                while (dataIterator.hasNext()) {
+                    User user = new User(dataIterator.next());
+                    Log.d("Login", "Added " + user);
+                    userList.add(user);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("Login", "Failed to read value.", databaseError.toException());
+            }
+        });
     }
 
     private void populateAutoComplete() {
@@ -317,12 +352,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
-        private Bundle bundle;
+        private Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
-            bundle = new Bundle();
         }
 
         @Override
@@ -336,13 +370,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            for (String credential : credentials) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
+            for (User user : userList) {
+                if (user.checkUser(mEmail)) {
                     // Account exists, return true if the password matches.
-                    bundle.putString("name", pieces[2]);
-                    bundle.putString("userType", pieces[3]);
-                    return pieces[1].equals(mPassword);
+                    intent.putExtra("User", user);
+                    return user.checkPassword(mPassword);
                 }
             }
 
@@ -356,8 +388,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
             } else {
