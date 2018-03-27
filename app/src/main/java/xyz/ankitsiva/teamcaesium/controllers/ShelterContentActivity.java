@@ -32,11 +32,13 @@ public class ShelterContentActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("hey", "hey");
+        Log.d("hey", "rq code = " + Integer.toString(requestCode) + "result = " + resultCode );
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             shelter = data.getParcelableExtra("Shelter");
+            Log.d("Content", "shelter got updated");
+            intent.putExtra("Shelter", shelter);
         }
     }
     private void initializeViews() {

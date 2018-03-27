@@ -72,7 +72,12 @@ public class ClaimBedActivity extends AppCompatActivity {
         try {
             num = Integer.parseInt(text);
         } catch (Exception e) {
-            finish();
+            Context context = getApplicationContext();
+            CharSequence text2 = "Unable to claim beds";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text2, duration);
+            toast.show();
         }
         if (!vacancy.claimBed(num)) {
             Context context = getApplicationContext();
@@ -84,8 +89,18 @@ public class ClaimBedActivity extends AppCompatActivity {
 
         } else {
             //shelter.writeToParcel(Parcel.obtain(), Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
-            finish();
-            startActivity(getIntent());
+            writeVacancy(Integer.toString(shelter.getKey()), vacancy.getBeds());
+            intent.putExtra("Shelter", shelter);
+            Context context = getApplicationContext();
+            CharSequence text2 = "Beds claimed!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text2, duration);
+            toast.show();
+            onBackPressed();
         }
+    }
+
+    private void writeVacancy(String key, int beds) {
+        mDatabase.child("shelters").child(key).child("Vacancies").setValue(beds);
     }
 }

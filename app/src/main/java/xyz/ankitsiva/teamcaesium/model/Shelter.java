@@ -18,6 +18,7 @@ public class Shelter implements Parcelable{
     private String longitude;
     private String restrictions;
     private String specialNotes;
+    private int key;
     private Vacancy vacancies;
 
     public Shelter(HashMap<String, Object> shelter) {
@@ -29,6 +30,7 @@ public class Shelter implements Parcelable{
         this.longitude = shelter.get("Longitude ").toString();
         this.restrictions = shelter.get("Restrictions").toString();
         this.specialNotes = shelter.get("Special Notes").toString();
+        this.key = Integer.parseInt(shelter.get("Unique Key").toString());
         this.vacancies = new Vacancy(Integer.valueOf(shelter.get("Max Vacancies").toString()),
                 Integer.valueOf(shelter.get("Vacancies").toString()));
     }
@@ -55,6 +57,7 @@ public class Shelter implements Parcelable{
         longitude = in.readString();
         restrictions = in.readString();
         specialNotes = in.readString();
+        key = in.readInt();
         vacancies = in.readParcelable(Vacancy.class.getClassLoader());
     }
     public int describeContents() {
@@ -69,6 +72,7 @@ public class Shelter implements Parcelable{
         out.writeString(longitude);
         out.writeString(restrictions);
         out.writeString(specialNotes);
+        out.writeInt(key);
         out.writeParcelable(vacancies, flags);
     }
 
@@ -116,6 +120,8 @@ public class Shelter implements Parcelable{
     }
 
     public Vacancy getVacancies() { return this.vacancies; }
+
+    public int getKey() { return this.key; }
 
     public String toString() { return this.getName();}
 }
