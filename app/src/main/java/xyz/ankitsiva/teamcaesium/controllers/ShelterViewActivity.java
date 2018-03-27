@@ -43,6 +43,7 @@ public class ShelterViewActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private Iterator<HashMap<String, Object>> dataIterator;
     private ArrayList<Shelter> shelterList;
+    private Shelter updShelter;
     private Intent intent;
     private User user;
     private EditText inputSearch;
@@ -255,6 +256,7 @@ public class ShelterViewActivity extends AppCompatActivity {
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             user = data.getParcelableExtra("User");
             Log.d("ViewActivity", "User got updated");
+            updShelter = data.getParcelableExtra("Shelter");
             intent.putExtra("User", user);
         }
     }

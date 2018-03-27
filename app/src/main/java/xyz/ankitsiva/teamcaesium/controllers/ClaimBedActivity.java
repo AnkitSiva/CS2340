@@ -99,15 +99,16 @@ public class ClaimBedActivity extends AppCompatActivity {
             //shelter.writeToParcel(Parcel.obtain(), Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
             user.addReservation(shelter, num);
             writeVacancy(Integer.toString(shelter.getKey()), vacancy.getBeds(), user.getKey(), user.getClaimed());
-            intent.putExtra("Shelter", shelter);
-            intent.putExtra("User", user);
             Context context = getApplicationContext();
             CharSequence text2 = "Beds claimed!";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text2, duration);
             toast.show();
-            onBackPressed();
-
+            Intent newIntent = new Intent(this, MainActivity.class);
+            newIntent.putExtra("Shelter", shelter);
+            newIntent.putExtra("User", user);
+            startActivity(newIntent);
+            finish();
         }
     }
 
