@@ -85,7 +85,7 @@ public class ShelterSearchActivity extends ListActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                shelterList =  dataSnapshot.getValue(t);
+                shelterList =  dataSnapshot.child("shelters").getValue(t);
                 dataIterator = shelterList.iterator();
                 while (viewIterator.hasNext()) {
                     view = viewIterator.next();

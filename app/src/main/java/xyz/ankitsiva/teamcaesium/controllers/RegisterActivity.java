@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,10 +35,20 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import xyz.ankitsiva.teamcaesium.R;
+import xyz.ankitsiva.teamcaesium.model.User;
 import xyz.ankitsiva.teamcaesium.model.UserList;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -57,6 +68,14 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+
+    private DatabaseReference mDatabase;
+    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
+    private ArrayList<HashMap<String, Object>> dataList;
+    private Iterator<HashMap<String, Object>> dataIterator;
+    private ArrayList<User> userList;
+
     // UI references.
     private TextInputEditText mNameView;
     private AutoCompleteTextView mEmailView;
@@ -66,7 +85,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private ArrayAdapter<CharSequence> userTypeSpinnerAdapter;
     private View mProgressView;
     private View mLoginFormView;
-    public static UserList users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +125,36 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         userTypeSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         userTypeSpinner.setAdapter(userTypeSpinnerAdapter);
         userTypeSpinner.setOnItemSelectedListener(this);
-        users = new UserList("admin:password:creator:admin");
+
+        userList = new ArrayList<>();
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
+                "https://cs2340-49af4.firebaseio.com/");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                dataList =  dataSnapshot.child("users").getValue(t);
+                dataIterator = dataList.iterator();
+                while (dataIterator.hasNext()) {
+                    User user = new User(dataIterator.next());
+                    userList.add(user);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("Login", "Failed to read value.", databaseError.toException());
+            }
+        });
+    }
+    private void writeNewUser(String userId, User user) {
+
+        mDatabase.child("users").child(userId).child("Username").setValue(user.getUsername());
+        mDatabase.child("users").child(userId).child("Password").setValue(user.getPassword());
+        mDatabase.child("users").child(userId).child("Beds").setValue(0);
+        mDatabase.child("users").child(userId).child("Key").setValue(userId);
+        mDatabase.child("users").child(userId).child("Shelter").setValue("-1");
     }
 
     private void populateAutoComplete() {
@@ -219,13 +266,18 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password, confirmPassword, name, userType);
+            mAuthTask = new UserLoginTask(email, password, confirmPassword, name);
             mAuthTask.execute((Void) null);
         }
     }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
+        for (User user : userList) {
+            if (user.checkUser(email)) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -343,16 +395,13 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         private final String mPassword;
         private final String mName;
         private final String mConfirmPassword;
-        private final String mUserType;
-        private Bundle bundle;
+        private Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-        UserLoginTask(String email, String password, String confirm, String name, String userType) {
+        UserLoginTask(String email, String password, String confirm, String name) {
             mEmail = email;
             mPassword = password;
             mConfirmPassword = confirm;
             mName = name;
-            mUserType = userType;
-            bundle = new Bundle();
         }
 
         @Override
@@ -369,9 +418,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
             // TODO: register the new account here.
             if (mConfirmPassword.equals(mPassword)) {
-                users.addUser(mEmail + ":" + mPassword + ":" + mName + ":" + mUserType);
-                bundle.putString("name", mName);
-                bundle.putString("userType", mUserType);
+                User newUser = new User(mEmail, mPassword);
+                userList.add(newUser);
+                newUser.setKey(Integer.toString(userList.indexOf(newUser)));
+                writeNewUser(Integer.toString(userList.indexOf(newUser)), newUser);
+                intent.putExtra("User", newUser);
                 return true;
             }
             return false;
@@ -383,8 +434,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             showProgress(false);
 
             if (success) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
             } else {

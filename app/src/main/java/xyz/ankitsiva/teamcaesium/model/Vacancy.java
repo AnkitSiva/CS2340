@@ -42,7 +42,7 @@ public class Vacancy implements Parcelable{
 
     public boolean claimBed(int amount) {
         if (beds - amount >= 0) {
-            beds = beds = amount;
+            beds = beds - amount;
             return true;
         } else {
             return false;

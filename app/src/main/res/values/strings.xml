@@ -54,4 +54,5 @@
     <string name="vacancy_count">Vacancies: ?</string>
     <string name="select_number_vacancies">How many beds do you want to claim?</string>
     <string name="claim">claim</string>
+    <string name="action_release_beds">Release Beds</string>
 </resources>
