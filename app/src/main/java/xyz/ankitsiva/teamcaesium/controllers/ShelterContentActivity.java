@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,12 +13,15 @@ import java.util.ArrayList;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
+import xyz.ankitsiva.teamcaesium.model.User;
 
 public class ShelterContentActivity extends AppCompatActivity {
 
-    public TextView mView;
-    public Intent intent;
-    public Shelter shelter;
+    private TextView mView;
+    private Intent intent;
+    private Shelter shelter;
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("this", "this");
@@ -29,6 +33,7 @@ public class ShelterContentActivity extends AppCompatActivity {
         if (shelter != null) {
             initializeViews();
         }
+        user = intent.getParcelableExtra("User");
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -37,10 +42,28 @@ public class ShelterContentActivity extends AppCompatActivity {
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             shelter = data.getParcelableExtra("Shelter");
+            user = data.getParcelableExtra("User");
             Log.d("Content", "shelter got updated");
             intent.putExtra("Shelter", shelter);
+            intent.putExtra("User", user);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_OK, intent);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
+    }
+
     private void initializeViews() {
         mView = findViewById(R.id.shelterName);
         mView.setText("Name:    " + shelter.getName());
@@ -63,6 +86,7 @@ public class ShelterContentActivity extends AppCompatActivity {
     public void claimBed(View view) {
         Intent intent = new Intent(this, ClaimBedActivity.class);
         intent.putExtra("Shelter", shelter);
+        intent.putExtra("User", user);
         startActivityForResult(intent, 1);
     }
 }

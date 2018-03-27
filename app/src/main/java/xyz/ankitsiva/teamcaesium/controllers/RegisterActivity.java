@@ -152,6 +152,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         mDatabase.child("users").child(userId).child("Username").setValue(user.getUsername());
         mDatabase.child("users").child(userId).child("Password").setValue(user.getPassword());
+        mDatabase.child("users").child(userId).child("Beds").setValue(0);
+        mDatabase.child("users").child(userId).child("Key").setValue(userId);
+        mDatabase.child("users").child(userId).child("Shelter").setValue("-1");
     }
 
     private void populateAutoComplete() {
@@ -417,6 +420,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             if (mConfirmPassword.equals(mPassword)) {
                 User newUser = new User(mEmail, mPassword);
                 userList.add(newUser);
+                newUser.setKey(Integer.toString(userList.indexOf(newUser)));
                 writeNewUser(Integer.toString(userList.indexOf(newUser)), newUser);
                 intent.putExtra("User", newUser);
                 return true;

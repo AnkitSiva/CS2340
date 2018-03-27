@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         userList = new ArrayList<>();
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -374,6 +374,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (user.checkUser(mEmail)) {
                     // Account exists, return true if the password matches.
                     intent.putExtra("User", user);
+                    Log.d("LoginActivity", "Shelter key is " + user.getShelterKey());
                     return user.checkPassword(mPassword);
                 }
             }

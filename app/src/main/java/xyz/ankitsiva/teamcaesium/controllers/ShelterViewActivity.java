@@ -1,11 +1,13 @@
 package xyz.ankitsiva.teamcaesium.controllers;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,6 +31,7 @@ import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.AgeCategories;
 import xyz.ankitsiva.teamcaesium.model.Gender;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
+import xyz.ankitsiva.teamcaesium.model.User;
 
 
 public class ShelterViewActivity extends AppCompatActivity {
@@ -41,7 +44,7 @@ public class ShelterViewActivity extends AppCompatActivity {
     private Iterator<HashMap<String, Object>> dataIterator;
     private ArrayList<Shelter> shelterList;
     private Intent intent;
-    private Bundle bundle;
+    private User user;
     private EditText inputSearch;
     private Spinner ageSpinner;
     private Spinner genderSpinner;
@@ -55,8 +58,7 @@ public class ShelterViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intent = getIntent();
-        bundle = intent.getExtras();
-
+        user = intent.getParcelableExtra("User");
         setContentView(R.layout.activity_shelter_view);
 
         listView = findViewById(R.id.listview);
@@ -237,20 +239,38 @@ public class ShelterViewActivity extends AppCompatActivity {
                                     int position, long id) {
                 Shelter selectedShelter = (Shelter) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), ShelterContentActivity.class);
-                /*
-                bundle.putString("Address", selectedShelter.getAddress());
-                bundle.putString("Capacity", selectedShelter.getCapacity());
-                bundle.putString("Latitude", selectedShelter.getLatitude());
-                bundle.putString("Longitude", selectedShelter.getLongitude());
-                bundle.putString("Phone Number", selectedShelter.getPhoneNumber());
-                bundle.putString("Restrictions", selectedShelter.getRestrictions());
-                bundle.putString("Shelter Name", selectedShelter.getName());
-                bundle.putString("Special Notes", selectedShelter.getSpecialNotes());
-                */
                 intent.putExtra("Shelter", selectedShelter);
-                startActivity(intent);
+                intent.putExtra("User", user);
+                startActivityForResult(intent, 1);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("ViewActivity", "rq code = " + Integer.toString(requestCode) + "result = " + resultCode );
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+            user = data.getParcelableExtra("User");
+            Log.d("ViewActivity", "User got updated");
+            intent.putExtra("User", user);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_OK, intent);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 }
