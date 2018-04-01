@@ -140,4 +140,10 @@ public class MainActivity extends AppCompatActivity {
             mVacancyText.setText("No current reservations.");
         }
     }
+
+    public void viewShelterMap(View view) {
+        Intent intent = new Intent(this, MapViewActivity.class);
+        intent.putExtra("User", user);
+        startActivityForResult(intent, 1);
+    }
 }
