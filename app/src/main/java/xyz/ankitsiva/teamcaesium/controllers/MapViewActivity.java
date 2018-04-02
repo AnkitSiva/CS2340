@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -53,7 +52,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     private ArrayAdapter<String> genderArrayAdapter;
     private GoogleMap classGoogleMap;
     private HashMap<Shelter, Marker> shelterMarkers;
-    private Shelter[] unusedShelterList;
 
     private final String[] chosenGender = new String[1];
     private final String[] chosenAge = new String[1];
@@ -185,8 +183,10 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         return;
 
     }
+
     @Override
     public void onBackPressed() {
+        intent.putExtra("User", user);
         setResult(Activity.RESULT_OK, intent);
         super.onBackPressed();
     }
