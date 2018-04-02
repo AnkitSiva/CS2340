@@ -1,5 +1,6 @@
 package xyz.ankitsiva.teamcaesium.controllers;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +45,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     private ArrayList<HashMap<String, Object>> dataList;
     private DatabaseReference mDatabase;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private ArrayList<Shelter> shelterList;
     private Intent intent;
     private User user;
     private Spinner ageSpinner;
@@ -71,6 +71,8 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        intent = getIntent();
+        user = intent.getParcelableExtra("User");
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
 
@@ -181,6 +183,12 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             shelterMarkers.put(shelter, curr);
         }
         return;
+
+    }
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_OK, intent);
+        super.onBackPressed();
     }
 }
 
