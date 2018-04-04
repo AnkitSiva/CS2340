@@ -4,9 +4,7 @@ import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Objects;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.AgeCategories;
@@ -31,15 +30,13 @@ import xyz.ankitsiva.teamcaesium.model.Gender;
  */
 
 public class ShelterSearchActivity extends ListActivity {
-    public static final String TAG = ShelterSearchActivity.class.getName();
-    public ArrayList<TextView> shelterViews;
-    public TextView view;
-    public Bundle bundle;
-    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
+    private static final String TAG = ShelterSearchActivity.class.getName();
+    private ArrayList<TextView> shelterViews;
+    private TextView view;
+    private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+            new GenericTypeIndicator<>();
     private ArrayList<HashMap<String, Object>> shelterList;
     private HashMap<String, Object> shelter;
-    private DatabaseReference mDatabase;
     private Iterator<HashMap<String, Object>> dataIterator;
     private Iterator<TextView> viewIterator;
     private Spinner genderSpinner;
@@ -47,7 +44,7 @@ public class ShelterSearchActivity extends ListActivity {
 
     private void searchShelters(String query, Object ageCategory, Object gender) {
         if (shelterList == null) {
-            throw new RuntimeException("oopsies");
+            throw new RuntimeException("Bad");
         }
         for (HashMap<String, Object> localShelter : shelterList) {
             if(((String) localShelter.get("Shelter Name")).contains(query)
@@ -61,7 +58,7 @@ public class ShelterSearchActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bundle = new Bundle();
+        Bundle bundle = new Bundle();
         setContentView(R.layout.activity_shelter_search);
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
@@ -69,15 +66,17 @@ public class ShelterSearchActivity extends ListActivity {
             String query = intent.getStringExtra(SearchManager.QUERY);
             searchShelters(query, ageSpinner.getSelectedItem(), genderSpinner.getSelectedItem());
         }
-        genderSpinner = (Spinner)  findViewById(R.id.gender);
-        ageSpinner = (Spinner) findViewById(R.id.age_category);
-        ArrayAdapter<String> genderAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, Gender.values());
+        genderSpinner = findViewById(R.id.gender);
+        ageSpinner = findViewById(R.id.age_category);
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, Gender.values());
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(genderAdapter);
-        ArrayAdapter<String> ageAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, AgeCategories.values());
+        ArrayAdapter<String> ageAdapter = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, AgeCategories.values());
         ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ageSpinner.setAdapter(ageAdapter);
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
 
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -86,7 +85,7 @@ public class ShelterSearchActivity extends ListActivity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 shelterList =  dataSnapshot.child("shelters").getValue(t);
-                dataIterator = shelterList.iterator();
+                dataIterator = Objects.requireNonNull(shelterList).iterator();
                 while (viewIterator.hasNext()) {
                     view = viewIterator.next();
                     shelter = dataIterator.next();
@@ -124,7 +123,8 @@ public class ShelterSearchActivity extends ListActivity {
         shelter = shelterList.get(shelterNo);
         bundle.putString("Address", (String) shelter.get("Address"));
         bundle.putString("Capacity", (String) shelter.get("Capacity"));
-        //Note: Latitude and longitude require that extra space for the key because someone messed up
+        //Note: Latitude and longitude require that extra space for the key because someone messed
+         up
         bundle.putString("Latitude", (String) shelter.get("Latitude "));
         bundle.putString("Longitude", (String) shelter.get("Longitude "));
         bundle.putString("Phone Number", (String) shelter.get("Phone Number"));

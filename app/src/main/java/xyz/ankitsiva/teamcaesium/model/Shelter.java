@@ -48,7 +48,7 @@ public class Shelter implements Parcelable{
         }
     }
 
-    public Shelter(Parcel in) {
+    private Shelter(Parcel in) {
         name = in.readString();
         address = in.readString();
         capacity = in.readString();
@@ -60,9 +60,11 @@ public class Shelter implements Parcelable{
         key = in.readInt();
         vacancies = in.readParcelable(Vacancy.class.getClassLoader());
     }
+    @Override
     public int describeContents() {
         return 0;
     }
+    @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(name);
         out.writeString(address);
@@ -78,10 +80,12 @@ public class Shelter implements Parcelable{
 
     public static final Parcelable.Creator<Shelter> CREATOR
             = new Parcelable.Creator<Shelter>() {
+        @Override
         public Shelter createFromParcel(Parcel in) {
             return new Shelter(in);
         }
 
+        @Override
         public Shelter[] newArray(int size) {
             return new Shelter[size];
         }

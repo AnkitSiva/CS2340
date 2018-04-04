@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.SupportMapFragment;
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.AgeCategories;
@@ -38,20 +37,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
+/**
+ * Controller for Map View
+ */
 public class MapViewActivity extends AppCompatActivity implements OnMapReadyCallback{
-    public ListView listView;
-    public static final String TAG = ShelterViewActivity.class.getName();
-    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
+    private ListView listView;
+    private static final String TAG = ShelterViewActivity.class.getName();
+    private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+            new GenericTypeIndicator<>();
     private ArrayList<HashMap<String, Object>> dataList;
-    private DatabaseReference mDatabase;
     private Iterator<HashMap<String, Object>> dataIterator;
     private Intent intent;
     private User user;
-    private Spinner ageSpinner;
-    private Spinner genderSpinner;
-    private ArrayAdapter<String> ageArrayAdapter;
-    private ArrayAdapter<String> genderArrayAdapter;
     private GoogleMap classGoogleMap;
     private HashMap<Shelter, Marker> shelterMarkers;
     private LatLngBounds cameraBounds;
@@ -59,8 +56,8 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     private final String[] chosenGender = new String[1];
     private final String[] chosenAge = new String[1];
 
-    final int NUM_AGE_CATEGORIES = 5;
-    final int NUM_GENDER_CATEGORIES = 3;
+    private final int NUM_AGE_CATEGORIES = 5;
+    private final int NUM_GENDER_CATEGORIES = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +71,11 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
 
         intent = getIntent();
         user = intent.getParcelableExtra("User");
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
 
-        ageSpinner = findViewById(R.id.ageSpinner);
-        genderSpinner = findViewById(R.id.genderSpinner);
+        Spinner ageSpinner = findViewById(R.id.ageSpinner);
+        Spinner genderSpinner = findViewById(R.id.genderSpinner);
         final LatLngBounds.Builder cameraBuilder = new LatLngBounds.Builder();
 
         shelterMarkers = new HashMap<>();
@@ -96,8 +93,10 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             genderCategoryStrings.add(value.getGender());
         }
 
-        ageArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
-        genderArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
+        ArrayAdapter<String> ageArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
+        ArrayAdapter<String> genderArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
 
         ageSpinner.setAdapter(ageArrayAdapter);
         genderSpinner.setAdapter(genderArrayAdapter);
@@ -107,12 +106,17 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 dataList =  dataSnapshot.child("shelters").getValue(t);
+                assert dataList != null;
                 dataIterator = dataList.iterator();
                 while (dataIterator.hasNext()) {
                     Shelter shelter = new Shelter(dataIterator.next());
-                    LatLng shelterCoords = new LatLng(Double.parseDouble(shelter.getLatitude()), Double.parseDouble(shelter.getLongitude()));
-                    cameraBuilder.include(shelterCoords);
-                    Marker curr = classGoogleMap.addMarker(new MarkerOptions().position(shelterCoords).title(shelter.getName()).snippet(shelter.getPhoneNumber()));
+                    LatLng shelterCoordinates =
+                            new LatLng(Double.parseDouble(shelter.getLatitude()),
+                                    Double.parseDouble(shelter.getLongitude()));
+                    cameraBuilder.include(shelterCoordinates);
+                    Marker curr = classGoogleMap.addMarker(new MarkerOptions().
+                            position(shelterCoordinates).title(shelter.getName()).
+                            snippet(shelter.getPhoneNumber()));
                     shelterMarkers.put(shelter, curr);
                 }
                 cameraBounds = cameraBuilder.build();
@@ -187,7 +191,8 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         for (Object object : shelterMarkers.keySet().toArray()) {
             Shelter shelter = (Shelter) object;
             Marker curr = shelterMarkers.get(shelter);
-            curr.setVisible(shelter.getRestrictions().contains(chosenAge[0]) && shelter.getRestrictions().contains(chosenGender[0]));
+            curr.setVisible(shelter.getRestrictions().contains(chosenAge[0]) &&
+                    shelter.getRestrictions().contains(chosenGender[0]));
             shelterMarkers.put(shelter, curr);
         }
         return;

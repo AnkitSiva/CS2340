@@ -17,7 +17,7 @@
     <string name="action_register">Register</string>
     <string name="prompt_username">Username</string>
     <string name="action_logout">Logout</string>
-    <string name="title_activity_registraction">RegistractionActivity</string>
+    <string name="title_activity_registration_activity">RegistrationActivity</string>
     <string name="title_activity_registration">Register</string>
     <string name="title_activity_register">Register</string>
     <string name="userType">User Type</string>

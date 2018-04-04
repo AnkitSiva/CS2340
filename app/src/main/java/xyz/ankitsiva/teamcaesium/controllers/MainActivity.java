@@ -22,7 +22,6 @@ import java.util.Iterator;
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
-import xyz.ankitsiva.teamcaesium.model.UserList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private String name, userType;
     private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
+    private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+            new GenericTypeIndicator<>();
     private ArrayList<Shelter> shelterList;
     private DatabaseReference mDatabase;
 
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 Log.d("MainActivity", "Database is called");
                 dataList = dataSnapshot.child("shelters").getValue(t);
+                assert dataList != null;
                 dataIterator = dataList.iterator();
                 while (dataIterator.hasNext()) {
                     Shelter shelter = new Shelter(dataIterator.next());
@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("MainActivity", "rq code = " + Integer.toString(requestCode) + "result = " + resultCode );
+        Log.d("MainActivity", "rq code = " + Integer.toString(requestCode) + "result = "
+                + resultCode );
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
@@ -104,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
         if (shelter != null) {
             user.addReservation(shelter, user.getClaimed());
             user.releaseBeds();
-            writeUpdate(Integer.toString(shelter.getKey()), shelter.getVacancies().getBeds(), user.getKey());
+            writeUpdate(Integer.toString(shelter.getKey()), shelter.getVacancies().getBeds(),
+                    user.getKey());
             shelter = null;
         }
         Intent refresh = new Intent(this, MainActivity.class);
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         this.finish();
     }
 
-    public void writeUpdate(String shelterKey, int beds, String userKey) {
+    private void writeUpdate(String shelterKey, int beds, String userKey) {
         mDatabase.child("shelters").child(shelterKey).child("Vacancies").setValue(beds);
         mDatabase.child("users").child(userKey).child("Shelter").setValue(-1);
         mDatabase.child("users").child(userKey).child("Beds").setValue(0);
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void setAllText() {
+    private void setAllText() {
         mText.setText("Welcome " + name + " - " + userType);
         Log.d("MainActivity", "Shelter key is " + user.getShelterKey());
         if (shelter != null) {
