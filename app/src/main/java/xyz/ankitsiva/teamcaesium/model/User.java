@@ -2,6 +2,7 @@ package xyz.ankitsiva.teamcaesium.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class User implements Parcelable{
     private String key;
     private String shelterKey;
     private int claimed;
+    @Nullable
     private Reservation reservation;
 
     public User(String username, String password) {

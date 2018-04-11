@@ -67,9 +67,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private DatabaseReference mDatabase;
     private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private ArrayList<HashMap<String, Object>> dataList;
+    private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private ArrayList<User> userList;
+    private List<User> userList;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.

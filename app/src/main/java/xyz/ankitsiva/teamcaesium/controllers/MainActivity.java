@@ -2,6 +2,7 @@ package xyz.ankitsiva.teamcaesium.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
@@ -29,13 +31,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView mText;
     private TextView mVacancyText;
     private Intent intent;
+    @Nullable
     private Shelter shelter;
-    private String name, userType;
-    private ArrayList<HashMap<String, Object>> dataList;
+    private String name;
+    private String userType;
+    private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private ArrayList<Shelter> shelterList;
+    private List<Shelter> shelterList;
     private DatabaseReference mDatabase;
 
     @Override

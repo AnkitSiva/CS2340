@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             new GenericTypeIndicator<>();
     private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private ArrayList<User> userList;
+    private List<User> userList;
 
     // UI references.
     private TextInputEditText mNameView;

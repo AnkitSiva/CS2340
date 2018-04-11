@@ -36,6 +36,7 @@ public class Shelter implements Parcelable{
                 Integer.valueOf(shelter.get("Vacancies").toString()));
     }
 
+    //What the fuck?
     public Shelter(boolean ye) {
         if(ye) {
             this.name =
