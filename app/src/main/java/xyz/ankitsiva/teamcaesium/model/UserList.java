@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * An array list class to hold all of the valid user/password combinations
  */
 
-class UserList {
+public class UserList {
     private final ArrayList<String> userList = new ArrayList<>();
 
     public UserList(String firstUser) {

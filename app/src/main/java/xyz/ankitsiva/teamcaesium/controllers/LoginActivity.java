@@ -39,13 +39,14 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import xyz.ankitsiva.teamcaesium.R;
+import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
+import xyz.ankitsiva.teamcaesium.model.UserList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -59,8 +60,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<>();
+    /**
+     * Calls the user list from model
+     * Currently coded as username:password:name:usertype
+     */
+    private DatabaseReference mDatabase;
+    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
     private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private ArrayList<User> userList;
@@ -82,10 +88,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         setupActionBar();
         // Set up the login form.
-        mEmailView = findViewById(R.id.email);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        mPasswordView = findViewById(R.id.password);
+        mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -97,18 +103,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
-        /*
-      Calls the user list from model
-      Currently coded as username:password:name:usertype
-     */
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
+        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
 
 
@@ -121,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 dataList = dataSnapshot.child("users").getValue(t);
-                dataIterator = Objects.requireNonNull(dataList).iterator();
+                dataIterator = dataList.iterator();
                 while (dataIterator.hasNext()) {
                     User user = new User(dataIterator.next());
                     Log.d("Login", "Added " + user);
@@ -186,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -346,11 +348,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
-        private final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        private Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
         UserLoginTask(String email, String password) {
             mEmail = email;
