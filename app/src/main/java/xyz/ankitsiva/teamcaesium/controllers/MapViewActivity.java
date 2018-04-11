@@ -188,7 +188,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void mutateMarkers() {
-        Log.w(TAG, shelterMarkers.isEmpty()? "True": "False");
         for (Object object : shelterMarkers.keySet().toArray()) {
             Shelter shelter = (Shelter) object;
             Marker curr = shelterMarkers.get(shelter);
