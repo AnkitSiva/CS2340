@@ -125,11 +125,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    public void searchShelters(View view) {
-        Intent intent = new Intent(this, ShelterSearchActivity.class);
-        startActivity(intent);
-    }
-
     public void setAllText() {
         mText.setText("Welcome " + name + " - " + userType);
         Log.d("MainActivity", "Shelter key is " + user.getShelterKey());
