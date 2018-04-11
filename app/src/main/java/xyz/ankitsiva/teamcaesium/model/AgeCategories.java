@@ -14,10 +14,5 @@ public enum AgeCategories {
 
     AgeCategories(String ageCat) {this.ageCat = ageCat;}
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
     public String getAgeCat() {return ageCat;}
 }

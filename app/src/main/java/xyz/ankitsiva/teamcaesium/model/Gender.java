@@ -13,11 +13,6 @@ public enum Gender {
 
     Gender(String gender) {this.gender = gender;}
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
     public String getGender() {
         return gender;
     }
