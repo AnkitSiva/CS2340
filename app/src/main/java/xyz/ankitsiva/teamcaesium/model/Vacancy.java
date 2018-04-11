@@ -21,10 +21,12 @@ public class Vacancy implements Parcelable{
         beds = in.readInt();
     }
 
-    public int describeContents() {
+    @Override
+	public int describeContents() {
         return 0;
     }
 
+    @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(maximum);
         out.writeInt(beds);
@@ -32,9 +34,11 @@ public class Vacancy implements Parcelable{
 
     public static final Parcelable.Creator<Vacancy> CREATOR
             = new Parcelable.Creator<Vacancy>() {
+        @Override
         public Vacancy createFromParcel(Parcel in) {
             return new Vacancy(in);
         }
+        @Override
         public Vacancy[] newArray(int size) {
             return new Vacancy[size];
         }

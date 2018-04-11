@@ -2,11 +2,8 @@ package xyz.ankitsiva.teamcaesium.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -18,11 +15,8 @@ import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
 import xyz.ankitsiva.teamcaesium.model.Vacancy;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class ClaimBedActivity extends AppCompatActivity {
 
@@ -30,7 +24,6 @@ public class ClaimBedActivity extends AppCompatActivity {
     private Intent intent;
     private Shelter shelter;
     private User user;
-    private TextView mView;
     private Vacancy vacancy;
     private EditText mEdit;
     private DatabaseReference mDatabase;
@@ -43,7 +36,7 @@ public class ClaimBedActivity extends AppCompatActivity {
         shelter = intent.getParcelableExtra("Shelter");
         user = intent.getParcelableExtra("User");
         vacancy = shelter.getVacancies();
-        mView = findViewById(R.id.Vacancies);
+        TextView mView = findViewById(R.id.Vacancies);
         mView.setText("Vacancies:   " + vacancy.getBeds());
         mEdit = findViewById(R.id.NumberBeds);
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(

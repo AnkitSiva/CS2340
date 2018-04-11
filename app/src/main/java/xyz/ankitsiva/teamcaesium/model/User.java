@@ -2,8 +2,9 @@ package xyz.ankitsiva.teamcaesium.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by kevin on 3/26/2018.
@@ -15,6 +16,7 @@ public class User implements Parcelable{
     private String key;
     private String shelterKey;
     private int claimed;
+    @Nullable
     private Reservation reservation;
 
     public User(String username, String password) {
@@ -52,7 +54,7 @@ public class User implements Parcelable{
         }
     }
 
-    public User(HashMap<String, Object> user) {
+    public User(Map<String, Object> user) {
         this.username = user.get("Username").toString();
         this.password = user.get("Password").toString();
         this.key = user.get("Key").toString();
@@ -67,9 +69,11 @@ public class User implements Parcelable{
         shelterKey = in.readString();
         claimed = in.readInt();
     }
+    @Override
     public int describeContents() {
         return 0;
     }
+    @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(username);
         out.writeString(password);
@@ -80,10 +84,12 @@ public class User implements Parcelable{
 
     public static final Parcelable.Creator<User> CREATOR
             = new Parcelable.Creator<User>() {
+        @Override
         public User createFromParcel(Parcel in) {
             return new User(in);
         }
 
+        @Override
         public User[] newArray(int size) {
             return new User[size];
         }

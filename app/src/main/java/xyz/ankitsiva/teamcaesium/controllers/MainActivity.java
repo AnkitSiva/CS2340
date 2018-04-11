@@ -2,6 +2,7 @@ package xyz.ankitsiva.teamcaesium.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,11 +19,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
-import xyz.ankitsiva.teamcaesium.model.UserList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,13 +31,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView mText;
     private TextView mVacancyText;
     private Intent intent;
+    @Nullable
     private Shelter shelter;
     private String name, userType;
-    private ArrayList<HashMap<String, Object>> dataList;
+    private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private ArrayList<Shelter> shelterList;
+    private List<Shelter> shelterList;
     private DatabaseReference mDatabase;
 
     @Override
@@ -60,7 +62,11 @@ public class MainActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 Log.d("MainActivity", "Database is called");
                 dataList = dataSnapshot.child("shelters").getValue(t);
-                dataIterator = dataList.iterator();
+                try {
+                    dataIterator = dataList.iterator();
+                } catch (Exception e) {
+
+                }
                 while (dataIterator.hasNext()) {
                     Shelter shelter = new Shelter(dataIterator.next());
                     shelterList.add(shelter);

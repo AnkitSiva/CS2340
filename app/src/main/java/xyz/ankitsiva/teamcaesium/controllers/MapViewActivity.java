@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.google.android.gms.maps.SupportMapFragment;
@@ -34,24 +33,22 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 public class MapViewActivity extends AppCompatActivity implements OnMapReadyCallback{
-    public ListView listView;
+    private static final double LAT = 33.749;
+    private static final double LNG = -84.388;
     public static final String TAG = ShelterViewActivity.class.getName();
     private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private ArrayList<HashMap<String, Object>> dataList;
-    private DatabaseReference mDatabase;
+    private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private Intent intent;
     private User user;
-    private Spinner ageSpinner;
-    private Spinner genderSpinner;
-    private ArrayAdapter<String> ageArrayAdapter;
-    private ArrayAdapter<String> genderArrayAdapter;
     private GoogleMap classGoogleMap;
-    private HashMap<Shelter, Marker> shelterMarkers;
+    private Map<Shelter, Marker> shelterMarkers;
 
     private final String[] chosenGender = new String[1];
     private final String[] chosenAge = new String[1];
@@ -71,11 +68,11 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
 
         intent = getIntent();
         user = intent.getParcelableExtra("User");
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
 
-        ageSpinner = findViewById(R.id.ageSpinner);
-        genderSpinner = findViewById(R.id.genderSpinner);
+        Spinner ageSpinner = findViewById(R.id.ageSpinner);
+        Spinner genderSpinner = findViewById(R.id.genderSpinner);
 
         shelterMarkers = new HashMap<>();
 
@@ -92,8 +89,8 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             genderCategoryStrings.add(value.getGender());
         }
 
-        ageArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
-        genderArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
+        ArrayAdapter<String> ageArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
+        ArrayAdapter<String> genderArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
 
         ageSpinner.setAdapter(ageArrayAdapter);
         genderSpinner.setAdapter(genderArrayAdapter);
@@ -103,7 +100,11 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 dataList =  dataSnapshot.child("shelters").getValue(t);
-                dataIterator = dataList.iterator();
+                try {
+                    dataIterator = dataList.iterator();
+                } catch (Exception e) {
+
+                }
                 while (dataIterator.hasNext()) {
                     Shelter shelter = new Shelter(dataIterator.next());
                     LatLng shelterCoords = new LatLng(Double.parseDouble(shelter.getLatitude()), Double.parseDouble(shelter.getLongitude()));
@@ -168,7 +169,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         classGoogleMap = googleMap;
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
-        LatLng atl = new LatLng(33.749, -84.388);
+        LatLng atl = new LatLng(LAT, LNG);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(atl));
     }
 

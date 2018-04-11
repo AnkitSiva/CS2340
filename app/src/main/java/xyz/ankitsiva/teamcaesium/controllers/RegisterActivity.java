@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +33,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -49,7 +49,6 @@ import java.util.List;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.User;
-import xyz.ankitsiva.teamcaesium.model.UserList;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -63,18 +62,20 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final int SLEEPTIME = 2000;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
+    @Nullable
     private UserLoginTask mAuthTask = null;
 
     private DatabaseReference mDatabase;
     private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private ArrayList<HashMap<String, Object>> dataList;
+    private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private ArrayList<User> userList;
+    private List<User> userList;
 
     // UI references.
     private TextInputEditText mNameView;
@@ -82,7 +83,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private EditText mPasswordView;
     private EditText mConfirmPasswordView;
     private Spinner userTypeSpinner;
-    private ArrayAdapter<CharSequence> userTypeSpinnerAdapter;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -92,11 +92,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         setContentView(R.layout.activity_register);
         setupActionBar();
         // Set up the login form.
-        mNameView = (TextInputEditText) findViewById(R.id.name);
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mNameView = findViewById(R.id.name);
+        mEmailView = findViewById(R.id.email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -107,9 +107,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 return false;
             }
         });
-        mConfirmPasswordView = (EditText) findViewById(R.id.confirmPassword);
+        mConfirmPasswordView = findViewById(R.id.confirmPassword);
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         userTypeSpinner = findViewById(R.id.userType);
-        userTypeSpinnerAdapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> userTypeSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.userTypes_array, R.layout.support_simple_spinner_dropdown_item);
         userTypeSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         userTypeSpinner.setAdapter(userTypeSpinnerAdapter);
@@ -135,7 +135,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 dataList =  dataSnapshot.child("users").getValue(t);
-                dataIterator = dataList.iterator();
+                try {
+                    dataIterator = dataList.iterator();
+                } catch (Exception e) {
+
+                }
                 while (dataIterator.hasNext()) {
                     User user = new User(dataIterator.next());
                     userList.add(user);
@@ -207,7 +211,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            try {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            } catch (Exception e) {
+
+            }
         }
     }
 
@@ -272,7 +280,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
+
         for (User user : userList) {
             if (user.checkUser(email)) {
                 return false;
@@ -281,8 +289,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         return true;
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
+    private boolean isPasswordValid(CharSequence password) {
+
         return password.length() > 4;
     }
 
@@ -365,12 +373,14 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mEmailView.setAdapter(adapter);
     }
 
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
         parent.getItemAtPosition(pos);
     }
 
+    @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
     }
@@ -406,17 +416,16 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
             try {
                 // Simulate network access.
-                Thread.sleep(2000);
+                Thread.sleep(SLEEPTIME);
             } catch (InterruptedException e) {
                 return false;
             }
 
 
-            // TODO: register the new account here.
+
             if (mConfirmPassword.equals(mPassword)) {
                 User newUser = new User(mEmail, mPassword);
                 userList.add(newUser);

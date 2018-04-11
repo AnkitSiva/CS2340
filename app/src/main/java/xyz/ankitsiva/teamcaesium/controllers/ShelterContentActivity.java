@@ -9,15 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
 
 public class ShelterContentActivity extends AppCompatActivity {
 
-    private TextView mView;
     private Intent intent;
     private Shelter shelter;
     private User user;
@@ -65,7 +62,7 @@ public class ShelterContentActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        mView = findViewById(R.id.shelterName);
+        TextView mView = findViewById(R.id.shelterName);
         mView.setText("Name:    " + shelter.getName());
         mView = findViewById(R.id.shelterAddress);
         mView.setText("Address:    " + shelter.getAddress());

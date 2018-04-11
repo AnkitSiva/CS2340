@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -39,9 +40,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import xyz.ankitsiva.teamcaesium.R;
-import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
-import xyz.ankitsiva.teamcaesium.model.UserList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,21 +58,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final int SLEEPTIME = 2000;
 
-    /**
-     * Calls the user list from model
-     * Currently coded as username:password:name:usertype
-     */
-    private DatabaseReference mDatabase;
-    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private ArrayList<HashMap<String, Object>> dataList;
+    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t;
+    private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private ArrayList<User> userList;
+    private List<User> userList;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
+    @Nullable
     private UserLoginTask mAuthTask = null;
 
     // UI references.
@@ -88,10 +83,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         setupActionBar();
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = findViewById(R.id.email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -102,15 +97,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        t = new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
+        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
+        /*
+      Calls the user list from model
+      Currently coded as username:password:name:usertype
+     */
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
 
 
@@ -123,7 +122,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 dataList = dataSnapshot.child("users").getValue(t);
-                dataIterator = dataList.iterator();
+                try {
+                    dataIterator = dataList.iterator();
+                } catch (Exception e) {
+
+                }
+
                 while (dataIterator.hasNext()) {
                     User user = new User(dataIterator.next());
                     Log.d("Login", "Added " + user);
@@ -188,7 +192,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            try {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            } catch (Exception e) {
+
+            }
+
         }
     }
 
@@ -245,12 +254,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
+
         return true;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
+
         return true;
     }
 
@@ -361,11 +370,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+
 
             try {
                 // Simulate network access.
-                Thread.sleep(2000);
+                Thread.sleep(SLEEPTIME);
             } catch (InterruptedException e) {
                 return false;
             }
@@ -379,7 +388,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
 
-            // TODO: register the new account here.
+
             return false;
         }
 
