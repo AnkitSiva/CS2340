@@ -228,6 +228,16 @@ public class ShelterViewActivity extends AppCompatActivity {
         }
         ArrayAdapter<Shelter> shelterArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tempShelterList);
         listView.setAdapter(shelterArrayAdapter);
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                android.os.Parcelable selectedShelter = (Shelter) parent.getItemAtPosition(position);
+                Intent intent = new Intent(getApplicationContext(), ShelterContentActivity.class);
+                intent.putExtra("Shelter", selectedShelter);
+                intent.putExtra("User", user);
+                startActivityForResult(intent, 1);
+            }
+        });
     }
 }
