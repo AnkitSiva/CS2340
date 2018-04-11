@@ -29,7 +29,7 @@ public class User implements Parcelable{
         final Shelter shelter;
         final int beds;
 
-        public Reservation(Shelter shelter, int beds) {
+        Reservation(Shelter shelter, int beds) {
             this.shelter = shelter;
             this.beds = beds;
         }

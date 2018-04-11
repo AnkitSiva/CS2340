@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import com.google.android.gms.maps.SupportMapFragment;
 import xyz.ankitsiva.teamcaesium.R;
@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -34,22 +35,23 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
+/**
+ * Controller for Map View
+ */
 public class MapViewActivity extends AppCompatActivity implements OnMapReadyCallback{
-    private static final double LAT = 33.749;
-    private static final double LNG = -84.388;
+    private ListView listView;
     private static final String TAG = ShelterViewActivity.class.getName();
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private List<HashMap<String, Object>> dataList;
+            new GenericTypeIndicator<>();
+    private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private Intent intent;
     private User user;
     private GoogleMap classGoogleMap;
-    private Map<Shelter, Marker> shelterMarkers;
+    private HashMap<Shelter, Marker> shelterMarkers;
+    private LatLngBounds cameraBounds;
 
     private final String[] chosenGender = new String[1];
     private final String[] chosenAge = new String[1];
@@ -74,6 +76,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
 
         Spinner ageSpinner = findViewById(R.id.ageSpinner);
         Spinner genderSpinner = findViewById(R.id.genderSpinner);
+        final LatLngBounds.Builder cameraBuilder = new LatLngBounds.Builder();
 
         shelterMarkers = new HashMap<>();
 
@@ -90,9 +93,9 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             genderCategoryStrings.add(value.getGender());
         }
 
-        SpinnerAdapter ageArrayAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
-        SpinnerAdapter genderArrayAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> ageArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
+        ArrayAdapter<String> genderArrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
 
         ageSpinner.setAdapter(ageArrayAdapter);
@@ -103,19 +106,20 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 dataList =  dataSnapshot.child("shelters").getValue(t);
-                try {
-					assert dataList != null;
-					dataIterator = dataList.iterator();
-                } catch (Exception e) {
-
-                }
+                assert dataList != null;
+                dataIterator = dataList.iterator();
                 while (dataIterator.hasNext()) {
                     Shelter shelter = new Shelter(dataIterator.next());
-                    LatLng shelterCoords = new LatLng(Double.parseDouble(shelter.getLatitude()),
-                            Double.parseDouble(shelter.getLongitude()));
-                    Marker curr = classGoogleMap.addMarker(new MarkerOptions().position(shelterCoords).title(shelter.getName()).snippet(shelter.getPhoneNumber()));
+                    LatLng shelterCoordinates =
+                            new LatLng(Double.parseDouble(shelter.getLatitude()),
+                                    Double.parseDouble(shelter.getLongitude()));
+                    cameraBuilder.include(shelterCoordinates);
+                    Marker curr = classGoogleMap.addMarker(new MarkerOptions().
+                            position(shelterCoordinates).title(shelter.getName()).
+                            snippet(shelter.getPhoneNumber()));
                     shelterMarkers.put(shelter, curr);
                 }
+                cameraBounds = cameraBuilder.build();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -142,7 +146,8 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             public void onNothingSelected(AdapterView<?> adapterView) {
                 chosenAge[0] = "";
                 mutateMarkers();
-			}
+                return;
+            }
         });
 
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -163,7 +168,8 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                 //No Change
                 chosenGender[0] = "";
                 mutateMarkers();
-			}
+                return;
+            }
         });
     }
 
@@ -172,8 +178,12 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         classGoogleMap = googleMap;
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
-        LatLng atl = new LatLng(LAT, LNG);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(atl));
+        LatLng atl = new LatLng(33.749, -84.388);
+        if(cameraBounds == null) {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(atl));
+        } else {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(cameraBounds.getCenter()));
+        }
     }
 
     private void mutateMarkers() {
@@ -185,8 +195,9 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                     shelter.getRestrictions().contains(chosenGender[0]));
             shelterMarkers.put(shelter, curr);
         }
+        return;
 
-	}
+    }
 
     @Override
     public void onBackPressed() {

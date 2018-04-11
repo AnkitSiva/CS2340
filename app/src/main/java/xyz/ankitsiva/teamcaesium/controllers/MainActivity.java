@@ -2,7 +2,6 @@ package xyz.ankitsiva.teamcaesium.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
@@ -31,15 +29,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView mText;
     private TextView mVacancyText;
     private Intent intent;
-    @Nullable
     private Shelter shelter;
-    private String name;
-    private String userType;
-    private List<HashMap<String, Object>> dataList;
+    private String name, userType;
+    private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private List<Shelter> shelterList;
+            new GenericTypeIndicator<>();
+    private ArrayList<Shelter> shelterList;
     private DatabaseReference mDatabase;
 
     @Override
@@ -63,17 +59,13 @@ public class MainActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 Log.d("MainActivity", "Database is called");
                 dataList = dataSnapshot.child("shelters").getValue(t);
-                try {
-                    assert dataList != null;
-                    dataIterator = dataList.iterator();
-                } catch (Exception e) {
-
-                }
+                assert dataList != null;
+                dataIterator = dataList.iterator();
                 while (dataIterator.hasNext()) {
                     Shelter shelter = new Shelter(dataIterator.next());
                     shelterList.add(shelter);
                 }
-                if (!"-1".equals(user.getShelterKey())) {
+                if (!user.getShelterKey().equals("-1")) {
                     shelter = shelterList.get(Integer.parseInt(user.getShelterKey()));
                 }
                 setAllText();
@@ -92,11 +84,11 @@ public class MainActivity extends AppCompatActivity {
                 + resultCode );
         super.onActivityResult(requestCode, resultCode, data);
 
-        if((requestCode == 1) && (resultCode == Activity.RESULT_OK)){
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             user = data.getParcelableExtra("User");
             Log.d("MainActivity", "User got updated");
             intent.putExtra("User", user);
-            if (!"-1".equals(user.getShelterKey())) {
+            if (!user.getShelterKey().equals("-1")) {
                 shelter = shelterList.get(Integer.parseInt(user.getShelterKey()));
             }
         }

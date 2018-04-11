@@ -11,7 +11,7 @@
         android:id="@+id/inputSearch"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint=""
+        android:hint="Shelter Name"
         android:inputType="textVisiblePassword" />
 
     <Spinner

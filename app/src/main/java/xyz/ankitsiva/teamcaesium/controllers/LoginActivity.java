@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -46,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -58,17 +58,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-    private static final int SLEEPTIME = 2000;
 
-    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t;
-    private List<HashMap<String, Object>> dataList;
+    private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+            new GenericTypeIndicator<>();
+    private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private List<User> userList;
+    private ArrayList<User> userList;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    @Nullable
     private UserLoginTask mAuthTask = null;
 
     // UI references.
@@ -90,14 +89,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if ((id == EditorInfo.IME_ACTION_DONE) || (id == EditorInfo.IME_NULL)) {
+                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
                 return false;
             }
         });
-        t = new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
+
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -122,13 +121,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 dataList = dataSnapshot.child("users").getValue(t);
-                try {
-                    assert dataList != null;
-                    dataIterator = dataList.iterator();
-                } catch (Exception e) {
-
-                }
-
+                dataIterator = Objects.requireNonNull(dataList).iterator();
                 while (dataIterator.hasNext()) {
                     User user = new User(dataIterator.next());
                     Log.d("Login", "Added " + user);
@@ -180,8 +173,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == REQUEST_READ_CONTACTS) {
-            if ((grantResults.length == 1) &&
-                    (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 populateAutoComplete();
             }
         }
@@ -194,12 +186,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            try {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            } catch (Exception e) {
-
-            }
-
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -255,14 +242,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private boolean isEmailValid(CharSequence email) {
-
-        return email.length() > 3;
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+        return true;
     }
 
-    private boolean isPasswordValid(CharSequence password) {
-
-        return password.length() > 3;
+    private boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
+        return true;
     }
 
     /**
@@ -352,13 +339,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         int ADDRESS = 0;
+        int IS_PRIMARY = 1;
     }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
@@ -371,11 +359,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
+            // TODO: attempt authentication against a network service.
 
             try {
                 // Simulate network access.
-                Thread.sleep(SLEEPTIME);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
             }
@@ -389,7 +377,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
 
-
+            // TODO: register the new account here.
             return false;
         }
 

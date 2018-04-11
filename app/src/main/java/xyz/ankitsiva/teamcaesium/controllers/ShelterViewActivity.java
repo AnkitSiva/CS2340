@@ -2,7 +2,6 @@ package xyz.ankitsiva.teamcaesium.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Objects;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.AgeCategories;
@@ -36,12 +34,15 @@ import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
 
 
+/**
+ * Controller for viewing shelters
+ */
 public class ShelterViewActivity extends AppCompatActivity {
     private static final String TAG = ShelterViewActivity.class.getName();
     private ListView listView;
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private List<HashMap<String, Object>> dataList;
+            new GenericTypeIndicator<>();
+    private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private ArrayList<Shelter> shelterList;
     private Intent intent;
@@ -49,7 +50,10 @@ public class ShelterViewActivity extends AppCompatActivity {
 
     private final int NUM_AGE_CATEGORIES = 5;
     private final int NUM_GENDER_CATEGORIES = 3;
-    
+
+    /**
+     * @param savedInstanceState Stuff that gets passed to the method
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,18 +79,18 @@ public class ShelterViewActivity extends AppCompatActivity {
             genderCategoryStrings.add(value.getGender());
         }
 
-        SpinnerAdapter ageArrayAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
-        SpinnerAdapter genderArrayAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
+        ArrayAdapter<String> ageArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
+        ArrayAdapter<String> genderArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
 
         ageSpinner.setAdapter(ageArrayAdapter);
         genderSpinner.setAdapter(genderArrayAdapter);
 
-        final List<ArrayAdapter<Shelter>> shelterArrayAdapter = new ArrayList<>(1);
+        final ArrayList<ArrayAdapter<Shelter>> shelterArrayAdapter = new ArrayList<>(1);
 
-        shelterArrayAdapter.add(new ArrayAdapter<>(
-                getApplicationContext(), android.R.layout.simple_list_item_1, backup));
+        shelterArrayAdapter.add(new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_list_item_1, backup));
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
@@ -97,12 +101,7 @@ public class ShelterViewActivity extends AppCompatActivity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 dataList =  dataSnapshot.child("shelters").getValue(t);
-                try {
-					assert dataList != null;
-					dataIterator = dataList.iterator();
-                } catch (Exception e){
-
-                }
+                dataIterator = Objects.requireNonNull(dataList).iterator();
                 while (dataIterator.hasNext()) {
                     Shelter shelter = new Shelter(dataIterator.next());
                     shelterList.add(shelter);
@@ -125,7 +124,7 @@ public class ShelterViewActivity extends AppCompatActivity {
                 ArrayAdapter<Shelter> filteredShelterListAdapter;
                 if (l == 0) {
                     for (Shelter shelter : new ArrayList<>(filteredShelterList)) {
-                        if (shelter.getRestrictions().isEmpty()) {
+                        if (shelter.getRestrictions().length() == 0) {
                             filteredShelterList.remove(shelter);
                         }
                     }
@@ -137,7 +136,8 @@ public class ShelterViewActivity extends AppCompatActivity {
                     }
                 } else if (l == 2) {
                     for (Shelter shelter : new ArrayList<>(filteredShelterList)) {
-                        if(!shelter.getRestrictions().contains(AgeCategories.CHILDREN.getAgeCat())) {
+                        if(!shelter.getRestrictions().contains(AgeCategories.CHILDREN.getAgeCat()))
+                        {
                             filteredShelterList.remove(shelter);
                         }
                     }
@@ -167,6 +167,7 @@ public class ShelterViewActivity extends AppCompatActivity {
                 shelterArrayAdapter.remove(0);
                 shelterArrayAdapter.add(filteredShelterListAdapter);
                 listView.setAdapter(shelterArrayAdapter.get(0));
+                return;
             }
         });
 
@@ -177,7 +178,7 @@ public class ShelterViewActivity extends AppCompatActivity {
                 ArrayAdapter<Shelter> filteredShelterListAdapter;
                 if (l == 0) {
                     for (Shelter shelter: new ArrayList<>(filteredShelterList)) {
-                        if(shelter.getRestrictions().isEmpty()) {
+                        if(shelter.getRestrictions().length() == 0) {
                             filteredShelterList.remove(shelter);
                         }
                     }
@@ -213,6 +214,7 @@ public class ShelterViewActivity extends AppCompatActivity {
                 shelterArrayAdapter.add(filteredShelterListAdapter);
                 listView.setAdapter(shelterArrayAdapter.get(0));
                 Log.d(TAG, "onNothingSelected: 6");
+                return;
             }
         });
 
@@ -229,11 +231,13 @@ public class ShelterViewActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
                                           int arg3) {
                 Log.d(TAG, "beforeTextChanged: 8");
+                return;
             }
 
             @Override
             public void afterTextChanged(Editable arg0) {
                 Log.d(TAG, "afterTextChanged: 8");
+                return;
             }
         });
 
@@ -242,7 +246,7 @@ public class ShelterViewActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Parcelable selectedShelter = (Shelter) parent.getItemAtPosition(position);
+                Shelter selectedShelter = (Shelter) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), ShelterContentActivity.class);
                 intent.putExtra("Shelter", selectedShelter);
                 intent.putExtra("User", user);
@@ -258,7 +262,7 @@ public class ShelterViewActivity extends AppCompatActivity {
                 "result = " + resultCode );
         super.onActivityResult(requestCode, resultCode, data);
 
-        if((requestCode == 1) && (resultCode == Activity.RESULT_OK)){
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             user = data.getParcelableExtra("User");
             Log.d("ViewActivity", "User got updated");
             Shelter updShelter = data.getParcelableExtra("Shelter");

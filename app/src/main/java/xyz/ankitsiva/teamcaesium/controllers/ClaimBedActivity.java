@@ -15,9 +15,13 @@ import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
 import xyz.ankitsiva.teamcaesium.model.Vacancy;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * Controller for claiming beds
+ */
 public class ClaimBedActivity extends AppCompatActivity {
 
 
@@ -30,13 +34,14 @@ public class ClaimBedActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        TextView mView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_claim_bed);
         intent = getIntent();
         shelter = intent.getParcelableExtra("Shelter");
         user = intent.getParcelableExtra("User");
         vacancy = shelter.getVacancies();
-        TextView mView = findViewById(R.id.Vacancies);
+        mView = findViewById(R.id.Vacancies);
         mView.setText("Vacancies:   " + vacancy.getBeds());
         mEdit = findViewById(R.id.NumberBeds);
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
@@ -60,7 +65,9 @@ public class ClaimBedActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * @param view The view to be passed in
+     */
     public void claimBed(View view) {
         String text = mEdit.getText().toString();
         int num = 0;
@@ -81,7 +88,7 @@ public class ClaimBedActivity extends AppCompatActivity {
 
             Toast toast = Toast.makeText(context, text2, duration);
             toast.show();
-        } else if (!"-1".equals(user.getShelterKey())){
+        } else if (!user.getShelterKey().equals("-1")){
             Context context = getApplicationContext();
             CharSequence text2 = "You already have a reservation for a shelter";
             int duration = Toast.LENGTH_SHORT;
@@ -91,8 +98,8 @@ public class ClaimBedActivity extends AppCompatActivity {
         } else {
             //shelter.writeToParcel(Parcel.obtain(), Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
             user.addReservation(shelter, num);
-            writeVacancy(Integer.toString(shelter.getKey()),
-                    vacancy.getBeds(), user.getKey(), user.getClaimed());
+            writeVacancy(Integer.toString(shelter.getKey()), vacancy.getBeds(), user.getKey(),
+                    user.getClaimed());
             Context context = getApplicationContext();
             CharSequence text2 = "Beds claimed!";
             int duration = Toast.LENGTH_SHORT;

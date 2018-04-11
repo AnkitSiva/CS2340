@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.User;
@@ -62,20 +62,18 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-    private static final int SLEEPTIME = 2000;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    @Nullable
     private UserLoginTask mAuthTask = null;
 
     private DatabaseReference mDatabase;
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
-    private List<HashMap<String, Object>> dataList;
+            new GenericTypeIndicator<>();
+    private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private List<User> userList;
+    private ArrayList<User> userList;
 
     // UI references.
     private TextInputEditText mNameView;
@@ -88,6 +86,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ArrayAdapter<CharSequence> userTypeSpinnerAdapter;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setupActionBar();
@@ -100,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if ((id == EditorInfo.IME_ACTION_DONE) || (id == EditorInfo.IME_NULL)) {
+                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -120,9 +119,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         userTypeSpinner = findViewById(R.id.userType);
-        ArrayAdapter<CharSequence> userTypeSpinnerAdapter = ArrayAdapter.createFromResource(this,
+        userTypeSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.userTypes_array, R.layout.support_simple_spinner_dropdown_item);
-        userTypeSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        userTypeSpinnerAdapter.setDropDownViewResource(R.layout.
+                support_simple_spinner_dropdown_item);
         userTypeSpinner.setAdapter(userTypeSpinnerAdapter);
         userTypeSpinner.setOnItemSelectedListener(this);
 
@@ -135,12 +135,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 dataList =  dataSnapshot.child("users").getValue(t);
-                try {
-                    assert dataList != null;
-                    dataIterator = dataList.iterator();
-                } catch (Exception e) {
-
-                }
+                dataIterator = Objects.requireNonNull(dataList).iterator();
                 while (dataIterator.hasNext()) {
                     User user = new User(dataIterator.next());
                     userList.add(user);
@@ -199,8 +194,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == REQUEST_READ_CONTACTS) {
-            if ((grantResults.length == 1) &&
-                    (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 populateAutoComplete();
             }
         }
@@ -213,11 +207,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            try {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            } catch (NullPointerException e) {
-
-            }
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -240,7 +230,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         String password = mPasswordView.getText().toString();
         String confirmPassword = mConfirmPasswordView.getText().toString();
         String name = mNameView.getText().toString();
-        //String userType = String.valueOf(userTypeSpinner.getSelectedItem());
+        String userType = String.valueOf(userTypeSpinner.getSelectedItem());
 
         boolean cancel = false;
         View focusView = null;
@@ -282,7 +272,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     }
 
     private boolean isEmailValid(String email) {
-
+        //TODO: Replace this with your own logic
         for (User user : userList) {
             if (user.checkUser(email)) {
                 return false;
@@ -291,8 +281,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         return true;
     }
 
-    private boolean isPasswordValid(CharSequence password) {
-
+    private boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -394,17 +384,18 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         };
 
         int ADDRESS = 0;
+        int IS_PRIMARY = 1;
     }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
-        //private final String mName;
+        private final String mName;
         private final String mConfirmPassword;
         private final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
@@ -412,21 +403,22 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             mEmail = email;
             mPassword = password;
             mConfirmPassword = confirm;
-            //mName = name;
+            mName = name;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
 
             try {
                 // Simulate network access.
-                Thread.sleep(SLEEPTIME);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
             }
 
 
-
+            // TODO: register the new account here.
             if (mConfirmPassword.equals(mPassword)) {
                 User newUser = new User(mEmail, mPassword);
                 userList.add(newUser);

@@ -37,7 +37,7 @@ public class ShelterContentActivity extends AppCompatActivity {
         Log.d("hey", "rq code = " + Integer.toString(requestCode) + "result = " + resultCode );
         super.onActivityResult(requestCode, resultCode, data);
 
-        if((requestCode == 1) && (resultCode == Activity.RESULT_OK)){
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             shelter = data.getParcelableExtra("Shelter");
             user = data.getParcelableExtra("User");
             Log.d("Content", "shelter got updated");
@@ -62,7 +62,8 @@ public class ShelterContentActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        TextView mView = findViewById(R.id.shelterName);
+        TextView mView;
+        mView = findViewById(R.id.shelterName);
         mView.setText("Name:    " + shelter.getName());
         mView = findViewById(R.id.shelterAddress);
         mView.setText("Address:    " + shelter.getAddress());
