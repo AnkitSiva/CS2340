@@ -2,6 +2,7 @@ package xyz.ankitsiva.teamcaesium.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,9 +81,9 @@ public class ShelterViewActivity extends AppCompatActivity {
             genderCategoryStrings.add(value.getGender());
         }
 
-        ArrayAdapter<String> ageArrayAdapter = new ArrayAdapter<>(this,
+        SpinnerAdapter ageArrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
-        ArrayAdapter<String> genderArrayAdapter = new ArrayAdapter<>(this,
+        SpinnerAdapter genderArrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
 
         ageSpinner.setAdapter(ageArrayAdapter);
@@ -242,7 +244,7 @@ public class ShelterViewActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Shelter selectedShelter = (Shelter) parent.getItemAtPosition(position);
+                android.os.Parcelable selectedShelter = (Shelter) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), ShelterContentActivity.class);
                 intent.putExtra("Shelter", selectedShelter);
                 intent.putExtra("User", user);
@@ -261,7 +263,6 @@ public class ShelterViewActivity extends AppCompatActivity {
         if((requestCode == 1) && (resultCode == Activity.RESULT_OK)){
             user = data.getParcelableExtra("User");
             Log.d("ViewActivity", "User got updated");
-            Shelter updShelter = data.getParcelableExtra("Shelter");
             intent.putExtra("User", user);
         }
     }

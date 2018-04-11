@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 Log.d("MainActivity", "Database is called");
                 dataList = dataSnapshot.child("shelters").getValue(t);
+                assert dataList != null;
                 dataIterator = dataList.iterator();
                 while (dataIterator.hasNext()) {
                     Shelter shelter = new Shelter(dataIterator.next());

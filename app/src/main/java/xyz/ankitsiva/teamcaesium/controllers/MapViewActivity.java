@@ -43,7 +43,6 @@ import java.util.Map;
  * Controller for Map View
  */
 public class MapViewActivity extends AppCompatActivity implements OnMapReadyCallback{
-    private ListView listView;
     private static final String TAG = ShelterViewActivity.class.getName();
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
@@ -58,8 +57,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     private final String[] chosenGender = new String[1];
     private final String[] chosenAge = new String[1];
 
-    private final double ATLATITUDE = 33.749;
-    private final double ATLONGITUDE = -84.388;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +177,9 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         classGoogleMap = googleMap;
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
-        LatLng atl = new LatLng(ATLATITUDE,ATLONGITUDE);
+        double ATLATITUDE = 33.749;
+        double ATLONGITUDE = -84.388;
+        LatLng atl = new LatLng(ATLATITUDE, ATLONGITUDE);
         if(cameraBounds == null) {
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(atl));
         } else {
