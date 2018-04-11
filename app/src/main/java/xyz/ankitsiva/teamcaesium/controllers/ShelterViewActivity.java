@@ -96,7 +96,6 @@ public class ShelterViewActivity extends AppCompatActivity {
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
-        Log.d(TAG, "onCreate: 1");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -109,16 +108,13 @@ public class ShelterViewActivity extends AppCompatActivity {
                     shelterList.add(shelter);
                 }
                 listView.setAdapter(shelterArrayAdapter.get(0));
-                Log.d(TAG, "onDataChange: 2");
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
-                Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         });
 
-        Log.d(TAG, "onCreate: 3");
         ageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
