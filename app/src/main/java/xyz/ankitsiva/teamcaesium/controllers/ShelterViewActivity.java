@@ -41,7 +41,7 @@ public class ShelterViewActivity extends AppCompatActivity {
     private static final String TAG = ShelterViewActivity.class.getName();
     private ListView listView;
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<>();
+            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
     private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private ArrayList<Shelter> shelterList;

@@ -44,7 +44,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     private ListView listView;
     private static final String TAG = ShelterViewActivity.class.getName();
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<>();
+            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
     private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private Intent intent;
