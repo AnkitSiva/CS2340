@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by kevin on 3/26/2018.
@@ -52,7 +53,7 @@ public class User implements Parcelable{
         }
     }
 
-    public User(HashMap<String, Object> user) {
+    public User(Map<String, Object> user) {
         this.username = user.get("Username").toString();
         this.password = user.get("Password").toString();
         this.key = user.get("Key").toString();

@@ -1,6 +1,7 @@
 package xyz.ankitsiva.teamcaesium.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by team caesium on 2/13/2018.
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  */
 
 public class UserList {
-    private final ArrayList<String> userList = new ArrayList<>();
+    public List<String> userList = new ArrayList<String>();
 
     public UserList(String firstUser) {
         super();
