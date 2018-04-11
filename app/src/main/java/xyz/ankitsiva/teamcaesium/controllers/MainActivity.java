@@ -22,7 +22,6 @@ import java.util.Iterator;
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
-import xyz.ankitsiva.teamcaesium.model.UserList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 Log.d("MainActivity", "Database is called");
                 dataList = dataSnapshot.child("shelters").getValue(t);
+                assert dataList != null;
                 dataIterator = dataList.iterator();
                 while (dataIterator.hasNext()) {
                     Shelter shelter = new Shelter(dataIterator.next());
@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("MainActivity", "rq code = " + Integer.toString(requestCode) + "result = " + resultCode );
+        Log.d("MainActivity", "rq code = " + Integer.toString(requestCode) + "result = "
+                + resultCode );
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
@@ -104,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
         if (shelter != null) {
             user.addReservation(shelter, user.getClaimed());
             user.releaseBeds();
-            writeUpdate(Integer.toString(shelter.getKey()), shelter.getVacancies().getBeds(), user.getKey());
+            writeUpdate(Integer.toString(shelter.getKey()), shelter.getVacancies().getBeds(),
+                    user.getKey());
             shelter = null;
         }
         Intent refresh = new Intent(this, MainActivity.class);

@@ -7,6 +7,9 @@ import android.view.View;
 
 import xyz.ankitsiva.teamcaesium.R;
 
+/**
+ * Controller for welcome screen
+ */
 public class WelcomeActivity extends AppCompatActivity {
 
     @Override
@@ -15,11 +18,17 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
     }
 
+    /**
+     * @param view The view to be displayed
+     */
     public void login(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * @param view The view to be displayed
+     */
     public void register(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);

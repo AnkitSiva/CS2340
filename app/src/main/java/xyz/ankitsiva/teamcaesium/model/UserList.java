@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Created by team caesium on 2/13/2018.
- * An arraylist class to hold all of the valid user/password combinations
+ * An array list class to hold all of the valid user/password combinations
  */
 
 public class UserList {
@@ -21,7 +21,8 @@ public class UserList {
     }
 
     /**
-     * Adds a new user to the arraylist
+     * Adds a new user to the array list
+     * @param user
      */
     public void addUser(String user) {
         userList.add(user);

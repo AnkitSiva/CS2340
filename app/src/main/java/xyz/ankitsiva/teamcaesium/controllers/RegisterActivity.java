@@ -32,7 +32,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -46,10 +45,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.User;
-import xyz.ankitsiva.teamcaesium.model.UserList;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -70,8 +69,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private UserLoginTask mAuthTask = null;
 
     private DatabaseReference mDatabase;
-    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
+    private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+            new GenericTypeIndicator<>();
     private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private ArrayList<User> userList;
@@ -82,21 +81,21 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private EditText mPasswordView;
     private EditText mConfirmPasswordView;
     private Spinner userTypeSpinner;
-    private ArrayAdapter<CharSequence> userTypeSpinnerAdapter;
     private View mProgressView;
     private View mLoginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ArrayAdapter<CharSequence> userTypeSpinnerAdapter;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setupActionBar();
         // Set up the login form.
-        mNameView = (TextInputEditText) findViewById(R.id.name);
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mNameView = findViewById(R.id.name);
+        mEmailView = findViewById(R.id.email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -107,9 +106,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 return false;
             }
         });
-        mConfirmPasswordView = (EditText) findViewById(R.id.confirmPassword);
+        mConfirmPasswordView = findViewById(R.id.confirmPassword);
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,7 +121,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         userTypeSpinner = findViewById(R.id.userType);
         userTypeSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.userTypes_array, R.layout.support_simple_spinner_dropdown_item);
-        userTypeSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        userTypeSpinnerAdapter.setDropDownViewResource(R.layout.
+                support_simple_spinner_dropdown_item);
         userTypeSpinner.setAdapter(userTypeSpinnerAdapter);
         userTypeSpinner.setOnItemSelectedListener(this);
 
@@ -135,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 dataList =  dataSnapshot.child("users").getValue(t);
-                dataIterator = dataList.iterator();
+                dataIterator = Objects.requireNonNull(dataList).iterator();
                 while (dataIterator.hasNext()) {
                     User user = new User(dataIterator.next());
                     userList.add(user);
@@ -207,7 +207,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -365,12 +365,14 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mEmailView.setAdapter(adapter);
     }
 
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
         parent.getItemAtPosition(pos);
     }
 
+    @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
     }
@@ -389,13 +391,13 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
         private final String mName;
         private final String mConfirmPassword;
-        private Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        private final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
         UserLoginTask(String email, String password, String confirm, String name) {
             mEmail = email;
