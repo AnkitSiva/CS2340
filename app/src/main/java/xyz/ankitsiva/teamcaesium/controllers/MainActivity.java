@@ -33,10 +33,11 @@ public class MainActivity extends AppCompatActivity {
     private Intent intent;
     @Nullable
     private Shelter shelter;
-    private String name, userType;
+    private String name;
+    private String userType;
     private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+    private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
     private List<Shelter> shelterList;
     private DatabaseReference mDatabase;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", "Database is called");
                 dataList = dataSnapshot.child("shelters").getValue(t);
                 try {
+                    assert dataList != null;
                     dataIterator = dataList.iterator();
                 } catch (Exception e) {
 
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     Shelter shelter = new Shelter(dataIterator.next());
                     shelterList.add(shelter);
                 }
-                if (!user.getShelterKey().equals("-1")) {
+                if (!"-1".equals(user.getShelterKey())) {
                     shelter = shelterList.get(Integer.parseInt(user.getShelterKey()));
                 }
                 setAllText();
@@ -86,14 +88,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("MainActivity", "rq code = " + Integer.toString(requestCode) + "result = " + resultCode );
+        Log.d("MainActivity", "rq code = " + Integer.toString(requestCode) + "result = "
+                + resultCode );
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+        if((requestCode == 1) && (resultCode == Activity.RESULT_OK)){
             user = data.getParcelableExtra("User");
             Log.d("MainActivity", "User got updated");
             intent.putExtra("User", user);
-            if (!user.getShelterKey().equals("-1")) {
+            if (!"-1".equals(user.getShelterKey())) {
                 shelter = shelterList.get(Integer.parseInt(user.getShelterKey()));
             }
         }
@@ -110,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
         if (shelter != null) {
             user.addReservation(shelter, user.getClaimed());
             user.releaseBeds();
-            writeUpdate(Integer.toString(shelter.getKey()), shelter.getVacancies().getBeds(), user.getKey());
+            writeUpdate(Integer.toString(shelter.getKey()), shelter.getVacancies().getBeds(),
+                    user.getKey());
             shelter = null;
         }
         Intent refresh = new Intent(this, MainActivity.class);
@@ -119,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         this.finish();
     }
 
-    public void writeUpdate(String shelterKey, int beds, String userKey) {
+    private void writeUpdate(String shelterKey, int beds, String userKey) {
         mDatabase.child("shelters").child(shelterKey).child("Vacancies").setValue(beds);
         mDatabase.child("users").child(userKey).child("Shelter").setValue(-1);
         mDatabase.child("users").child(userKey).child("Beds").setValue(0);
@@ -136,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void setAllText() {
+    private void setAllText() {
         mText.setText("Welcome " + name + " - " + userType);
         Log.d("MainActivity", "Shelter key is " + user.getShelterKey());
         if (shelter != null) {

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.google.android.gms.maps.SupportMapFragment;
 import xyz.ankitsiva.teamcaesium.R;
@@ -40,8 +41,8 @@ import java.util.Map;
 public class MapViewActivity extends AppCompatActivity implements OnMapReadyCallback{
     private static final double LAT = 33.749;
     private static final double LNG = -84.388;
-    public static final String TAG = ShelterViewActivity.class.getName();
-    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+    private static final String TAG = ShelterViewActivity.class.getName();
+    private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
     private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
@@ -53,8 +54,8 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     private final String[] chosenGender = new String[1];
     private final String[] chosenAge = new String[1];
 
-    final int NUM_AGE_CATEGORIES = 5;
-    final int NUM_GENDER_CATEGORIES = 3;
+    private final int NUM_AGE_CATEGORIES = 5;
+    private final int NUM_GENDER_CATEGORIES = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +90,10 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             genderCategoryStrings.add(value.getGender());
         }
 
-        ArrayAdapter<String> ageArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
-        ArrayAdapter<String> genderArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
+        SpinnerAdapter ageArrayAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
+        SpinnerAdapter genderArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
 
         ageSpinner.setAdapter(ageArrayAdapter);
         genderSpinner.setAdapter(genderArrayAdapter);
@@ -101,13 +104,15 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                 // whenever data at this location is updated.
                 dataList =  dataSnapshot.child("shelters").getValue(t);
                 try {
-                    dataIterator = dataList.iterator();
+					assert dataList != null;
+					dataIterator = dataList.iterator();
                 } catch (Exception e) {
 
                 }
                 while (dataIterator.hasNext()) {
                     Shelter shelter = new Shelter(dataIterator.next());
-                    LatLng shelterCoords = new LatLng(Double.parseDouble(shelter.getLatitude()), Double.parseDouble(shelter.getLongitude()));
+                    LatLng shelterCoords = new LatLng(Double.parseDouble(shelter.getLatitude()),
+                            Double.parseDouble(shelter.getLongitude()));
                     Marker curr = classGoogleMap.addMarker(new MarkerOptions().position(shelterCoords).title(shelter.getName()).snippet(shelter.getPhoneNumber()));
                     shelterMarkers.put(shelter, curr);
                 }
@@ -137,8 +142,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             public void onNothingSelected(AdapterView<?> adapterView) {
                 chosenAge[0] = "";
                 mutateMarkers();
-                return;
-            }
+			}
         });
 
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -159,8 +163,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                 //No Change
                 chosenGender[0] = "";
                 mutateMarkers();
-                return;
-            }
+			}
         });
     }
 
@@ -178,12 +181,12 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         for (Object object : shelterMarkers.keySet().toArray()) {
             Shelter shelter = (Shelter) object;
             Marker curr = shelterMarkers.get(shelter);
-            curr.setVisible(shelter.getRestrictions().contains(chosenAge[0]) && shelter.getRestrictions().contains(chosenGender[0]));
+            curr.setVisible(shelter.getRestrictions().contains(chosenAge[0]) &&
+                    shelter.getRestrictions().contains(chosenGender[0]));
             shelterMarkers.put(shelter, curr);
         }
-        return;
 
-    }
+	}
 
     @Override
     public void onBackPressed() {

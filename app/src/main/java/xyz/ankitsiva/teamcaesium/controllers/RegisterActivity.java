@@ -71,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private UserLoginTask mAuthTask = null;
 
     private DatabaseReference mDatabase;
-    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+    private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
     private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
@@ -100,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                if ((id == EditorInfo.IME_ACTION_DONE) || (id == EditorInfo.IME_NULL)) {
                     attemptLogin();
                     return true;
                 }
@@ -136,6 +136,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 // whenever data at this location is updated.
                 dataList =  dataSnapshot.child("users").getValue(t);
                 try {
+                    assert dataList != null;
                     dataIterator = dataList.iterator();
                 } catch (Exception e) {
 
@@ -198,7 +199,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if ((grantResults.length == 1) &&
+                    (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 populateAutoComplete();
             }
         }
@@ -213,7 +215,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // Show the Up button in the action bar.
             try {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            } catch (Exception e) {
+            } catch (NullPointerException e) {
 
             }
         }
@@ -238,7 +240,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         String password = mPasswordView.getText().toString();
         String confirmPassword = mConfirmPasswordView.getText().toString();
         String name = mNameView.getText().toString();
-        String userType = String.valueOf(userTypeSpinner.getSelectedItem());
+        //String userType = String.valueOf(userTypeSpinner.getSelectedItem());
 
         boolean cancel = false;
         View focusView = null;
@@ -392,7 +394,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     /**
@@ -403,15 +404,15 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         private final String mEmail;
         private final String mPassword;
-        private final String mName;
+        //private final String mName;
         private final String mConfirmPassword;
-        private Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        private final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
         UserLoginTask(String email, String password, String confirm, String name) {
             mEmail = email;
             mPassword = password;
             mConfirmPassword = confirm;
-            mName = name;
+            //mName = name;
         }
 
         @Override

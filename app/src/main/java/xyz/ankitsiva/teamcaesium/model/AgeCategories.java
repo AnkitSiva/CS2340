@@ -10,14 +10,9 @@ public enum AgeCategories {
     CHILDREN ("Children"),
     YA ("Young Adult");
 
-    private String ageCat;
+    private final String ageCat;
 
     AgeCategories(String ageCat) {this.ageCat = ageCat;}
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 
     public String getAgeCat() {return ageCat;}
 }

@@ -81,7 +81,7 @@ public class ClaimBedActivity extends AppCompatActivity {
 
             Toast toast = Toast.makeText(context, text2, duration);
             toast.show();
-        } else if (!user.getShelterKey().equals("-1")){
+        } else if (!"-1".equals(user.getShelterKey())){
             Context context = getApplicationContext();
             CharSequence text2 = "You already have a reservation for a shelter";
             int duration = Toast.LENGTH_SHORT;
@@ -91,7 +91,8 @@ public class ClaimBedActivity extends AppCompatActivity {
         } else {
             //shelter.writeToParcel(Parcel.obtain(), Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
             user.addReservation(shelter, num);
-            writeVacancy(Integer.toString(shelter.getKey()), vacancy.getBeds(), user.getKey(), user.getClaimed());
+            writeVacancy(Integer.toString(shelter.getKey()),
+                    vacancy.getBeds(), user.getKey(), user.getClaimed());
             Context context = getApplicationContext();
             CharSequence text2 = "Beds claimed!";
             int duration = Toast.LENGTH_SHORT;

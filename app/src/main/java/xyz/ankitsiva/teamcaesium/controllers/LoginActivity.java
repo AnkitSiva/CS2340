@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                if ((id == EditorInfo.IME_ACTION_DONE) || (id == EditorInfo.IME_NULL)) {
                     attemptLogin();
                     return true;
                 }
@@ -123,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // whenever data at this location is updated.
                 dataList = dataSnapshot.child("users").getValue(t);
                 try {
+                    assert dataList != null;
                     dataIterator = dataList.iterator();
                 } catch (Exception e) {
 
@@ -179,7 +180,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if ((grantResults.length == 1) &&
+                    (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 populateAutoComplete();
             }
         }
@@ -253,14 +255,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private boolean isEmailValid(String email) {
+    private boolean isEmailValid(CharSequence email) {
 
-        return true;
+        return email.length() > 3;
     }
 
-    private boolean isPasswordValid(String password) {
+    private boolean isPasswordValid(CharSequence password) {
 
-        return true;
+        return password.length() > 3;
     }
 
     /**
@@ -350,7 +352,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     /**
@@ -361,7 +362,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
-        private Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        private final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
         UserLoginTask(String email, String password) {
             mEmail = email;

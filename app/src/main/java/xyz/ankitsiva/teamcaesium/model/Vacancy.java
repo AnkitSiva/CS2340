@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 
 public class Vacancy implements Parcelable{
-    private int maximum;
+    private final int maximum;
     private int beds;
 
     public Vacancy(int maximum, int beds) {
@@ -45,7 +45,7 @@ public class Vacancy implements Parcelable{
     };
 
     public boolean claimBed(int amount) {
-        if (beds - amount >= 0) {
+        if ((beds - amount) >= 0) {
             beds = beds - amount;
             return true;
         } else {
@@ -53,12 +53,9 @@ public class Vacancy implements Parcelable{
         }
     }
 
-    public boolean releaseBed(int amount) {
-        if (beds + amount <= maximum) {
+    public void releaseBed(int amount) {
+        if ((beds + amount) <= maximum) {
             beds = beds + amount;
-            return true;
-        } else {
-            return false;
         }
     }
 

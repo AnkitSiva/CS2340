@@ -11,8 +11,8 @@ import java.util.Map;
  */
 
 public class User implements Parcelable{
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
     private String key;
     private String shelterKey;
     private int claimed;
@@ -26,8 +26,8 @@ public class User implements Parcelable{
     }
 
     private class Reservation {
-        protected Shelter shelter;
-        protected int beds;
+        final Shelter shelter;
+        final int beds;
 
         public Reservation(Shelter shelter, int beds) {
             this.shelter = shelter;
@@ -41,16 +41,12 @@ public class User implements Parcelable{
         claimed = beds;
     }
 
-    public Shelter releaseBeds() {
-        if (reservation == null) {
-            return null;
-        } else {
+    public void releaseBeds() {
+        if (reservation != null) {
             reservation.shelter.getVacancies().releaseBed(reservation.beds);
-            Shelter cur = reservation.shelter;
             reservation = null;
             shelterKey = "-1";
             claimed = 0;
-            return cur;
         }
     }
 
@@ -62,7 +58,7 @@ public class User implements Parcelable{
         this.claimed = Integer.parseInt(user.get("Beds").toString());
     }
 
-    public User(Parcel in) {
+    private User(Parcel in) {
         username = in.readString();
         password = in.readString();
         key = in.readString();

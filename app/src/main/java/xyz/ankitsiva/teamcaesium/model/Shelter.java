@@ -35,20 +35,7 @@ public class Shelter implements Parcelable{
                 Integer.valueOf(shelter.get("Vacancies").toString()));
     }
 
-    public Shelter(boolean ye) {
-        if(ye) {
-            this.name =
-            this.address =
-            this.capacity =
-            this.phoneNumber =
-            this.latitude =
-            this.longitude =
-            this.restrictions =
-            this.specialNotes = "Special Notes";
-        }
-    }
-
-    public Shelter(Parcel in) {
+    private Shelter(Parcel in) {
         name = in.readString();
         address = in.readString();
         capacity = in.readString();
