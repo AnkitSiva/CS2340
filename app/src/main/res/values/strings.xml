@@ -31,6 +31,8 @@
     <string name="prompt_gender">Gender</string>
     <string name="prompt_longitude">Longitude</string>
     <string name="prompt_latitude">Latitude</string>
+    <string name="prompt_gender_spinner">Gender Preference</string>
+    <string name="prompt_age_spinner">Age Preference</string>
     <string name="zero">0</string>
     <string name="one">1</string>
     <string name="two">2</string>

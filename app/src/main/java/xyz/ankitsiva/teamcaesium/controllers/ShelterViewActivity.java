@@ -182,7 +182,6 @@ public class ShelterViewActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                userQuery[0] = "";
                 mutateList();
             }
         });
