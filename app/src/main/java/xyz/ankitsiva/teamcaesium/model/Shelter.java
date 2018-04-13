@@ -36,17 +36,17 @@ public class Shelter implements Parcelable{
     }
 
     //What the fuck?
-    public Shelter(boolean ye) {
-        if(ye) {
-            this.name =
-            this.address =
-            this.capacity =
-            this.phoneNumber =
-            this.latitude =
-            this.longitude =
-            this.restrictions =
-            this.specialNotes = "Special Notes";
-        }
+    public Shelter() {
+        this.name = "Shelter";
+        this.address = "Default address";
+        this.capacity = "100";
+        this.phoneNumber = "555-555-5555";
+        this.latitude = "0";
+        this.longitude = "0";
+        this.restrictions = "None";
+        this.specialNotes = "Special Notes";
+        this.key = -1;
+        this.vacancies = new Vacancy(100, 100);
     }
 
     private Shelter(Parcel in) {
