@@ -65,10 +65,12 @@ public class User implements Parcelable{
         shelterKey = in.readString();
         claimed = in.readInt();
     }
+
     @Override
     public int describeContents() {
         return 0;
     }
+
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(username);

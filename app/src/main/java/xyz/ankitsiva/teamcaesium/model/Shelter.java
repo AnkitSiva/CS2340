@@ -3,7 +3,7 @@ package xyz.ankitsiva.teamcaesium.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ankitsiva on 3/7/18.
@@ -21,7 +21,7 @@ public class Shelter implements Parcelable{
     private int key;
     private Vacancy vacancies;
 
-    public Shelter(HashMap<String, Object> shelter) {
+    public Shelter(Map<String, Object> shelter) {
         this.name = shelter.get("Shelter Name").toString();
         this.address = shelter.get("Address").toString();
         this.capacity = shelter.get("Capacity").toString();
@@ -35,6 +35,7 @@ public class Shelter implements Parcelable{
                 Integer.valueOf(shelter.get("Vacancies").toString()));
     }
 
+    //What the fuck?
     public Shelter(boolean ye) {
         if(ye) {
             this.name =

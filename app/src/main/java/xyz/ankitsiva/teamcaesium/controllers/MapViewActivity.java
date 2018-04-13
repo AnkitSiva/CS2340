@@ -35,29 +35,28 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * Controller for Map View
  */
 public class MapViewActivity extends AppCompatActivity implements OnMapReadyCallback{
-    private ListView listView;
     private static final String TAG = ShelterViewActivity.class.getName();
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<>();
-    private ArrayList<HashMap<String, Object>> dataList;
+            new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
+    private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private Intent intent;
     private User user;
     private GoogleMap classGoogleMap;
-    private HashMap<Shelter, Marker> shelterMarkers;
+    private Map<Shelter, Marker> shelterMarkers;
     private LatLngBounds cameraBounds;
 
     private final String[] chosenGender = new String[1];
     private final String[] chosenAge = new String[1];
 
-    private final int NUM_AGE_CATEGORIES = 5;
-    private final int NUM_GENDER_CATEGORIES = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,11 +82,13 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         chosenGender[0] = "";
         chosenAge[0] = "";
 
+        int NUM_AGE_CATEGORIES = 5;
         ArrayList<String> ageCategoryStrings = new ArrayList<>(NUM_AGE_CATEGORIES);
         for (AgeCategories value: AgeCategories.values()) {
             ageCategoryStrings.add(value.getAgeCat());
         }
 
+        int NUM_GENDER_CATEGORIES = 3;
         ArrayList<String> genderCategoryStrings = new ArrayList<>(NUM_GENDER_CATEGORIES);
         for (Gender value: Gender.values()) {
             genderCategoryStrings.add(value.getGender());
@@ -146,7 +147,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             public void onNothingSelected(AdapterView<?> adapterView) {
                 chosenAge[0] = "";
                 mutateMarkers();
-                return;
             }
         });
 
@@ -168,7 +168,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                 //No Change
                 chosenGender[0] = "";
                 mutateMarkers();
-                return;
             }
         });
     }
@@ -178,7 +177,9 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         classGoogleMap = googleMap;
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
-        LatLng atl = new LatLng(33.749, -84.388);
+        double ATLATITUDE = 33.749;
+        double ATLONGITUDE = -84.388;
+        LatLng atl = new LatLng(ATLATITUDE, ATLONGITUDE);
         if(cameraBounds == null) {
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(atl));
         } else {
@@ -187,7 +188,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void mutateMarkers() {
-        Log.w(TAG, shelterMarkers.isEmpty()? "True": "False");
         for (Object object : shelterMarkers.keySet().toArray()) {
             Shelter shelter = (Shelter) object;
             Marker curr = shelterMarkers.get(shelter);
@@ -195,7 +195,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                     shelter.getRestrictions().contains(chosenGender[0]));
             shelterMarkers.put(shelter, curr);
         }
-        return;
 
     }
 
