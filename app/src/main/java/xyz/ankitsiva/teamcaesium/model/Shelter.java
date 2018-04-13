@@ -35,20 +35,6 @@ public class Shelter implements Parcelable{
                 Integer.valueOf(shelter.get("Vacancies").toString()));
     }
 
-    //What the fuck?
-    public Shelter() {
-        this.name = "Shelter";
-        this.address = "Default address";
-        this.capacity = "100";
-        this.phoneNumber = "555-555-5555";
-        this.latitude = "0";
-        this.longitude = "0";
-        this.restrictions = "None";
-        this.specialNotes = "Special Notes";
-        this.key = -1;
-        this.vacancies = new Vacancy(100, 100);
-    }
-
     private Shelter(Parcel in) {
         name = in.readString();
         address = in.readString();
