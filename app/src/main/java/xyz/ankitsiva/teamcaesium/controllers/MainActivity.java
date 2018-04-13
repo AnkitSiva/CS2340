@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private String userType;
     private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
+    private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
     private List<Shelter> shelterList;
     private DatabaseReference mDatabase;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     Shelter shelter = new Shelter(dataIterator.next());
                     shelterList.add(shelter);
                 }
-                if (!user.getShelterKey().equals("-1")) {
+                if (!"-1".equals(user.getShelterKey())) {
                     shelter = shelterList.get(Integer.parseInt(user.getShelterKey()));
                 }
                 setAllText();
@@ -88,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
                 + resultCode );
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+        if((requestCode == 1) && (resultCode == Activity.RESULT_OK)){
             user = data.getParcelableExtra("User");
             Log.d("MainActivity", "User got updated");
             intent.putExtra("User", user);
-            if (!user.getShelterKey().equals("-1")) {
+            if (!"-1".equals(user.getShelterKey())) {
                 shelter = shelterList.get(Integer.parseInt(user.getShelterKey()));
             }
         }
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         if (shelter != null) {
             user.addReservation(shelter, user.getClaimed());
             user.releaseBeds();
-            writeUpdate(Integer.toString(shelter.getKey()), shelter.getVacancies().getBeds(),
+            writeUpdate(Integer.toString(shelter.getKey()), shelter.getBeds(),
                     user.getKey());
             shelter = null;
         }

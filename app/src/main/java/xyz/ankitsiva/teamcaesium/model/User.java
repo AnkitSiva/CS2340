@@ -36,7 +36,7 @@ public class User implements Parcelable{
         }
 
         private void releaseBeds() {
-            shelter.getVacancies().releaseBed(beds);
+            shelter.releaseBed(beds);
         }
     }
 

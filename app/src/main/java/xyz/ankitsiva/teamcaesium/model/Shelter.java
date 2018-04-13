@@ -10,16 +10,16 @@ import java.util.Map;
  */
 
 public class Shelter implements Parcelable{
-    private String name;
-    private String address;
-    private String capacity;
-    private String phoneNumber;
-    private String latitude;
-    private String longitude;
-    private String restrictions;
-    private String specialNotes;
-    private int key;
-    private Vacancy vacancies;
+    private final String name;
+    private final String address;
+    private final String capacity;
+    private final String phoneNumber;
+    private final String latitude;
+    private final String longitude;
+    private final String restrictions;
+    private final String specialNotes;
+    private final int key;
+    private final Vacancy vacancies;
 
     public Shelter(Map<String, Object> shelter) {
         this.name = shelter.get("Shelter Name").toString();
@@ -91,6 +91,14 @@ public class Shelter implements Parcelable{
             return new Shelter[size];
         }
     };
+
+    public void releaseBed(int beds) {
+        vacancies.releaseBed(beds);
+    }
+
+    public int getBeds() {
+        return vacancies.getBeds();
+    }
 
     public String getName() {
         return this.name;

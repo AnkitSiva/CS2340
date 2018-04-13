@@ -1,10 +1,10 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Team Caesium</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
+    <string name="prompt_email" tools:keep="@string/prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in" tools:keep="@string/action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -17,33 +17,33 @@
     <string name="action_register">Register</string>
     <string name="prompt_username">Username</string>
     <string name="action_logout">Logout</string>
-    <string name="title_activity_registration_activity">RegistrationActivity</string>
-    <string name="title_activity_registration">Register</string>
+    <string name="title_activity_registration_activity" tools:keep="@string/title_activity_registration_activity">RegistrationActivity</string>
+    <string name="title_activity_registration" tools:keep="@string/title_activity_registration">Register</string>
     <string name="title_activity_register">Register</string>
     <string name="userType">User Type</string>
     <string name="prompt_name">Name</string>
     <string name="prompt_confirm_password">Confirm Password</string>
     <string name="action_view_shelters">View Shelters</string>
-    <string name="default_shelter">Shelter information here</string>
+    <string name="default_shelter" tools:keep="@string/default_shelter">Shelter information here</string>
     <string name="prompt_address">Address</string>
     <string name="prompt_capacity">Capacity</string>
     <string name="prompt_phone">Phone #</string>
     <string name="prompt_gender">Gender</string>
     <string name="prompt_longitude">Longitude</string>
     <string name="prompt_latitude">Latitude</string>
-    <string name="zero">0</string>
-    <string name="one">1</string>
-    <string name="two">2</string>
-    <string name="three">3</string>
-    <string name="four">4</string>
-    <string name="five">5</string>
-    <string name="six">6</string>
-    <string name="seven">7</string>
-    <string name="eight">8</string>
-    <string name="nine">9</string>
-    <string name="ten">10</string>
-    <string name="eleven">11</string>
-    <string name="twelve">12</string>
+    <string name="zero" tools:keep="@string/zero">0</string>
+    <string name="one" tools:keep="@string/one">1</string>
+    <string name="two" tools:keep="@string/two">2</string>
+    <string name="three" tools:keep="@string/three">3</string>
+    <string name="four" tools:keep="@string/four">4</string>
+    <string name="five" tools:keep="@string/five">5</string>
+    <string name="six" tools:keep="@string/six">6</string>
+    <string name="seven" tools:keep="@string/seven">7</string>
+    <string name="eight" tools:keep="@string/eight">8</string>
+    <string name="nine" tools:keep="@string/nine">9</string>
+    <string name="ten" tools:keep="@string/ten">10</string>
+    <string name="eleven" tools:keep="@string/eleven">11</string>
+    <string name="twelve" tools:keep="@string/twelve">12</string>
     <string-array name="userTypes_array">
         <item>user</item>
         <item>admin</item>

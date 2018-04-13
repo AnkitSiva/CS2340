@@ -28,13 +28,14 @@ public class UserTest {
 	 */
 	@Test
 	public void addReservation() throws Exception {
-		user.addReservation(shelter, 50);
+		int beds = 50;
+		user.addReservation(shelter, beds);
 		assertNotNull(user.getReservation());
-		assertEquals(user.getClaimed(), 50);
+		assertEquals(user.getClaimed(), beds);
 		assertEquals(user.getShelterKey(), Integer.toString(shelter.getKey()));
 
 		user = new User("Kevin", "Password");
-		user.addReservation(nullShelter, 50);
+		user.addReservation(nullShelter, beds);
 		assertNull(user.getReservation());
 		assertEquals(user.getShelterKey(), "-1");
 		assertEquals(user.getClaimed(), 0);

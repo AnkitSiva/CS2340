@@ -34,7 +34,7 @@
             android:layout_marginTop="100dp"
             android:ems="10"
             android:hint="@string/select_number_vacancies"
-            android:inputType="textPersonName"
+            android:inputType="numberSigned"
             android:numeric="integer" />
 
         <Button

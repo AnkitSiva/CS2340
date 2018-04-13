@@ -2,7 +2,6 @@ package xyz.ankitsiva.teamcaesium.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -226,7 +226,7 @@ public class ShelterViewActivity extends AppCompatActivity {
                 tempShelterList.add(shelter);
             }
         }
-        ArrayAdapter<Shelter> shelterArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tempShelterList);
+        ListAdapter shelterArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tempShelterList);
         listView.setAdapter(shelterArrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

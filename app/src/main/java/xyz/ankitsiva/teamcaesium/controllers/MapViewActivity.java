@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.google.android.gms.maps.SupportMapFragment;
 import xyz.ankitsiva.teamcaesium.R;
@@ -43,6 +43,8 @@ import java.util.Map;
  * Controller for Map View
  */
 public class MapViewActivity extends AppCompatActivity implements OnMapReadyCallback{
+    private static final double ATLATITUDE = 33.749;
+    private static final double ATLONGITUDE = -84.388;
     private static final String TAG = ShelterViewActivity.class.getName();
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
@@ -94,9 +96,9 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             genderCategoryStrings.add(value.getGender());
         }
 
-        ArrayAdapter<String> ageArrayAdapter = new ArrayAdapter<>(this,
+        SpinnerAdapter ageArrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, ageCategoryStrings);
-        ArrayAdapter<String> genderArrayAdapter = new ArrayAdapter<>(this,
+        SpinnerAdapter genderArrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, genderCategoryStrings);
 
         ageSpinner.setAdapter(ageArrayAdapter);
@@ -177,8 +179,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         classGoogleMap = googleMap;
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
-        double ATLATITUDE = 33.749;
-        double ATLONGITUDE = -84.388;
+
         LatLng atl = new LatLng(ATLATITUDE, ATLONGITUDE);
         if(cameraBounds == null) {
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(atl));

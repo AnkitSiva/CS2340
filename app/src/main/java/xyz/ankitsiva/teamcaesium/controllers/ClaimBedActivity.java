@@ -88,7 +88,7 @@ public class ClaimBedActivity extends AppCompatActivity {
 
             Toast toast = Toast.makeText(context, text2, duration);
             toast.show();
-        } else if (!user.getShelterKey().equals("-1")){
+        } else if (!"-1".equals(user.getShelterKey())){
             Context context = getApplicationContext();
             CharSequence text2 = "You already have a reservation for a shelter";
             int duration = Toast.LENGTH_SHORT;
