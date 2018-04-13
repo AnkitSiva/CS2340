@@ -16,6 +16,7 @@ public class User implements Parcelable{
     private String key;
     private String shelterKey;
     private int claimed;
+
     @Nullable
     private Reservation reservation;
 
@@ -33,24 +34,26 @@ public class User implements Parcelable{
             this.shelter = shelter;
             this.beds = beds;
         }
+
+        private void releaseBeds() {
+            shelter.getVacancies().releaseBed(beds);
+        }
     }
 
     public void addReservation(Shelter shelter, int beds) {
-        reservation = new Reservation(shelter, beds);
-        shelterKey = Integer.toString(shelter.getKey());
-        claimed = beds;
+        if (shelter != null) {
+            reservation = new Reservation(shelter, beds);
+            shelterKey = Integer.toString(shelter.getKey());
+            claimed = beds;
+        }
     }
 
-    public Shelter releaseBeds() {
-        if (reservation == null) {
-            return null;
-        } else {
-            reservation.shelter.getVacancies().releaseBed(reservation.beds);
-            Shelter cur = reservation.shelter;
+    public void releaseBeds() {
+        if (reservation != null) {
+            reservation.releaseBeds();
             reservation = null;
             shelterKey = "-1";
             claimed = 0;
-            return cur;
         }
     }
 
@@ -111,6 +114,11 @@ public class User implements Parcelable{
 
     public int getClaimed() {
         return claimed;
+    }
+
+    @Nullable
+    public Reservation getReservation() {
+        return reservation;
     }
 
     public String getKey() {
