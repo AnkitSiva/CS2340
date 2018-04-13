@@ -244,10 +244,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        return email.length() > 0;
+        return !email.isEmpty();
     }
 
-    private boolean isPasswordValid(String password) {
+    private boolean isPasswordValid(CharSequence password) {
         return password.length() >= 4;
     }
 

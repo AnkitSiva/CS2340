@@ -16,11 +16,13 @@ public class UserTest {
 	private User user;
 	private Shelter shelter;
 	private Shelter nullShelter;
+	private static final int BEDS = 50;
 
 	@Before
 	public void setUp() {
 		user = new User("Kevin", "Password");
 		shelter = new Shelter();
+		nullShelter = null;
 	}
 
 	/*
@@ -28,14 +30,14 @@ public class UserTest {
 	 */
 	@Test
 	public void addReservation() throws Exception {
-		int beds = 50;
-		user.addReservation(shelter, beds);
+
+		user.addReservation(shelter, BEDS);
 		assertNotNull(user.getReservation());
-		assertEquals(user.getClaimed(), beds);
+		assertEquals(user.getClaimed(), BEDS);
 		assertEquals(user.getShelterKey(), Integer.toString(shelter.getKey()));
 
 		user = new User("Kevin", "Password");
-		user.addReservation(nullShelter, beds);
+		user.addReservation(nullShelter, BEDS);
 		assertNull(user.getReservation());
 		assertEquals(user.getShelterKey(), "-1");
 		assertEquals(user.getClaimed(), 0);

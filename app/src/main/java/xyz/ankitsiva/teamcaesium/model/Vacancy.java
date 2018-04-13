@@ -53,12 +53,10 @@ public class Vacancy implements Parcelable{
         }
     }
 
-    public boolean releaseBed(int amount) {
+    public void releaseBed(int amount) {
         if ((beds + amount) <= maximum) {
             beds = beds + amount;
-            return true;
         } else {
-            return false;
         }
     }
 

@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         this.finish();
     }
 
-    public void writeUpdate(String shelterKey, int beds, String userKey) {
+    private void writeUpdate(String shelterKey, int beds, String userKey) {
         mDatabase.child("shelters").child(shelterKey).child("Vacancies").setValue(beds);
         mDatabase.child("users").child(userKey).child("Shelter").setValue(-1);
         mDatabase.child("users").child(userKey).child("Beds").setValue(0);
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    public void setAllText() {
+    private void setAllText() {
         mText.setText("Welcome " + name + " - " + userType);
         Log.d("MainActivity", "Shelter key is " + user.getShelterKey());
         if (shelter != null) {
