@@ -189,7 +189,22 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    private void mutateMarkers() {
+    public void mutateMarkers() throws IllegalArgumentException{
+        if (shelterMarkers == null) {
+            throw new IllegalArgumentException("Shelter markers not currently set. " +
+                    "Create them and re-request");
+        }
+
+        if (chosenAge[0] == null) {
+            throw new IllegalArgumentException("Chosen age not correctly set. " +
+                    "Create them and re-request");
+        }
+
+        if (chosenGender[0] == null) {
+            throw new IllegalArgumentException("Chosen gender not correctly set. " +
+                    "Create them and re-request");
+        }
+
         for (Object object : shelterMarkers.keySet().toArray()) {
             Shelter shelter = (Shelter) object;
             Marker curr = shelterMarkers.get(shelter);
@@ -198,6 +213,14 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             shelterMarkers.put(shelter, curr);
         }
 
+    }
+
+    public void setShelterMarkers(Map<Shelter, Marker> shelterMarkers) {
+        this.shelterMarkers = shelterMarkers;
+    }
+
+    public Map<Shelter, Marker> getShelterMarkers() {
+        return shelterMarkers;
     }
 
     @Override
@@ -214,6 +237,14 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
             return true;
         }
         return false;
+    }
+
+    public void setChosenGender(String choice) {
+        chosenGender[0] = choice;
+    }
+
+    public void setChosenAge(String choice) {
+        chosenAge[0] = choice;
     }
 }
 
