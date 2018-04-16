@@ -97,9 +97,6 @@ public class ShelterViewActivity extends AppCompatActivity {
         ageSpinner.setAdapter(ageArrayAdapter);
         genderSpinner.setAdapter(genderArrayAdapter);
 
-        final ArrayAdapter<Shelter> shelterArrayAdapter = new ArrayAdapter<>(getApplicationContext(),
-                android.R.layout.simple_list_item_1, backup);
-
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -225,13 +222,15 @@ public class ShelterViewActivity extends AppCompatActivity {
                 tempShelterList.add(shelter);
             }
         }
-        ListAdapter shelterArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tempShelterList);
+        ListAdapter shelterArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, tempShelterList);
         listView.setAdapter(shelterArrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                android.os.Parcelable selectedShelter = (Shelter) parent.getItemAtPosition(position);
+                android.os.Parcelable selectedShelter =
+                        (Shelter) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), ShelterContentActivity.class);
                 intent.putExtra("Shelter", selectedShelter);
                 intent.putExtra("User", user);

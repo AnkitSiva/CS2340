@@ -195,12 +195,12 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                     "Create them and re-request");
         }
 
-        if (chosenAge == null || chosenAge[0] == null) {
+        if (chosenAge[0] == null) {
             throw new IllegalArgumentException("Chosen age not correctly set. " +
                     "Create them and re-request");
         }
 
-        if (chosenGender == null || chosenGender[0] == null) {
+        if (chosenGender[0] == null) {
             throw new IllegalArgumentException("Chosen gender not correctly set. " +
                     "Create them and re-request");
         }
