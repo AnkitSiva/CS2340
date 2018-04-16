@@ -45,6 +45,9 @@ public class Vacancy implements Parcelable{
     };
 
     public boolean claimBed(int amount) {
+        if (amount <= 0) {
+            return false;
+        }
         if ((beds - amount) >= 0) {
             beds = beds - amount;
             return true;
@@ -54,6 +57,9 @@ public class Vacancy implements Parcelable{
     }
 
     public void releaseBed(int amount) {
+        if (amount <= 0) {
+            return;
+        }
         if ((beds + amount) <= maximum) {
             beds = beds + amount;
         } else {

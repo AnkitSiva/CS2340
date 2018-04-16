@@ -43,4 +43,16 @@ public class UserTest {
 		assertEquals(user.getClaimed(), 0);
 	}
 
+	/**
+	 * Mason Baughan test of User's releaseBeds() method
+	 */
+	@Test
+	public void releaseBeds() throws Exception {
+
+		user.addReservation(shelter, BEDS);
+		user.releaseBeds();
+		assertNull(user.getReservation());
+
+	}
+
 }
