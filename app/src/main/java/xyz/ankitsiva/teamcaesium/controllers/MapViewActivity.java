@@ -229,6 +229,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
 
     /**
      * Returns the shelterMarker in case of saving the user's last searched shelters
+     * @return
      */
     public Map<Shelter, Marker> getShelterMarkers() {
         return shelterMarkers;
