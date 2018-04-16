@@ -83,7 +83,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mConfirmPasswordView;
-    private Spinner userTypeSpinner;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -121,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        userTypeSpinner = findViewById(R.id.userType);
+        Spinner userTypeSpinner = findViewById(R.id.userType);
         userTypeSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.userTypes_array, R.layout.support_simple_spinner_dropdown_item);
         userTypeSpinnerAdapter.setDropDownViewResource(R.layout.

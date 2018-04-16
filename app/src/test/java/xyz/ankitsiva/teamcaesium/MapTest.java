@@ -18,11 +18,9 @@ import static org.junit.Assert.*;
  * Tests MapViewActivity's mutateMarkers()
  */
 public class MapTest {
-    MapViewActivity mva;
-    private Map<Shelter, Marker> nullShelterMarkerMap;
-    private Map<Shelter, Marker> emptyShelterMarkerMap;
+    private MapViewActivity mva;
 
-    /**
+	/**
      * Sets up the test
      */
 	@Before
@@ -35,7 +33,7 @@ public class MapTest {
      */
 	@Test
 	public void testEmptyMarkerMap() {
-        emptyShelterMarkerMap = new HashMap<>();
+		Map<Shelter, Marker> emptyShelterMarkerMap = new HashMap<>();
         mva.setShelterMarkers(emptyShelterMarkerMap);
         assertArrayEquals(emptyShelterMarkerMap.keySet().toArray(),
                 mva.getShelterMarkers().keySet().toArray());
@@ -68,7 +66,7 @@ public class MapTest {
      */
 	@Test(expected = IllegalArgumentException.class)
     public void testNullMarkers() {
-	    nullShelterMarkerMap = null;
+		Map<Shelter, Marker> nullShelterMarkerMap = null;
 	    mva.setShelterMarkers(nullShelterMarkerMap);
         mva.mutateMarkers();
 	}

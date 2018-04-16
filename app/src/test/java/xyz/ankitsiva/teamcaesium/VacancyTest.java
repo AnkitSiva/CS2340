@@ -3,7 +3,6 @@ package xyz.ankitsiva.teamcaesium;
 import org.junit.Before;
 import org.junit.Test;
 
-import xyz.ankitsiva.teamcaesium.model.User;
 import xyz.ankitsiva.teamcaesium.model.Vacancy;
 
 import static org.junit.Assert.*;

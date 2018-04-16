@@ -47,7 +47,7 @@ public class ShelterViewActivity extends AppCompatActivity {
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
     private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
-    private ArrayList<Shelter> shelterList;
+    private List<Shelter> shelterList;
     private Intent intent;
     private User user;
 
