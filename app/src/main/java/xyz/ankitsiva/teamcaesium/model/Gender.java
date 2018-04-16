@@ -13,6 +13,10 @@ public enum Gender {
 
     Gender(String gender) {this.gender = gender;}
 
+    /**
+     * gets the users gender
+     * @return the users gender
+     */
     public String getGender() {
         return gender;
     }

@@ -25,6 +25,9 @@ import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
 
+/**
+ * Main page of the app
+ */
 public class MainActivity extends AppCompatActivity {
 
     private User user;
@@ -99,12 +102,20 @@ public class MainActivity extends AppCompatActivity {
         setAllText();
     }
 
+    /**
+     * logout button
+     * @param view the view of the logout button
+     */
     public void logout(View view) {
         Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * button to release a user's reserved beds
+     * @param view the view of the release beds button
+     */
     public void releaseBeds(View view) {
         if (shelter != null) {
             user.addReservation(shelter, user.getClaimed());
@@ -125,6 +136,10 @@ public class MainActivity extends AppCompatActivity {
         mDatabase.child("users").child(userKey).child("Beds").setValue(0);
     }
 
+    /**
+     * button to show the list of shelters
+     * @param view the view of the view shelter list button
+     */
     public void viewShelterList(View view) {
         Intent intent = new Intent(this, ShelterViewActivity.class);
         intent.putExtra("User", user);
@@ -142,6 +157,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * button to show the shelter map
+     * @param view the view for the view map button
+     */
     public void viewShelterMap(View view) {
         Intent intent = new Intent(this, MapViewActivity.class);
         intent.putExtra("User", user);

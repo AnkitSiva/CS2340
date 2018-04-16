@@ -13,6 +13,9 @@ import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.Shelter;
 import xyz.ankitsiva.teamcaesium.model.User;
 
+/**
+ * shows each shelter's content and attributes
+ */
 public class ShelterContentActivity extends AppCompatActivity {
 
     private Intent intent;
@@ -81,6 +84,10 @@ public class ShelterContentActivity extends AppCompatActivity {
         mView.setText("Special Notes:    " + shelter.getSpecialNotes());
     }
 
+    /**
+     * claim bed button for the shelter
+     * @param view the view for the claim bed button
+     */
     public void claimBed(View view) {
         Intent intent = new Intent(this, ClaimBedActivity.class);
         intent.putExtra("Shelter", shelter);

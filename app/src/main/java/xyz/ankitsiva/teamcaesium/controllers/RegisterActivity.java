@@ -233,7 +233,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         String password = mPasswordView.getText().toString();
         String confirmPassword = mConfirmPasswordView.getText().toString();
         String name = mNameView.getText().toString();
-        String userType = String.valueOf(userTypeSpinner.getSelectedItem());
 
         boolean cancel = false;
         View focusView = null;
@@ -385,7 +384,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     /**
@@ -396,7 +394,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         private final String mEmail;
         private final String mPassword;
-        private final String mName;
         private final String mConfirmPassword;
         private final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
@@ -404,7 +401,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             mEmail = email;
             mPassword = password;
             mConfirmPassword = confirm;
-            mName = name;
         }
 
         @Override

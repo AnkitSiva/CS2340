@@ -21,6 +21,10 @@ public class Shelter implements Parcelable{
     private final int key;
     private final Vacancy vacancies;
 
+    /**
+     * Shelter constructor
+     * @param shelter a shelter from the database
+     */
     public Shelter(Map<String, Object> shelter) {
         this.name = shelter.get("Shelter Name").toString();
         this.address = shelter.get("Address").toString();
@@ -35,6 +39,9 @@ public class Shelter implements Parcelable{
                 Integer.valueOf(shelter.get("Vacancies").toString()));
     }
 
+    /**
+     * default shelter constructor
+     */
     public Shelter() {
         name = "Default";
         address = "Address";
@@ -90,49 +97,98 @@ public class Shelter implements Parcelable{
         }
     };
 
+    /**
+     * releases beds at this shelter
+     * @param beds the number of beds to be released
+     */
     public void releaseBed(int beds) {
         vacancies.releaseBed(beds);
     }
 
+    /**
+     * gets the beds available at the shelter
+     * @return the number of available beds at the shelter
+     */
     public int getBeds() {
         return vacancies.getBeds();
     }
 
+    /**
+     * gets the shelter's name
+     * @return the shelter's name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * gets the shelter's address
+     * @return the shelter's address
+     */
     public String getAddress() {
         return this.address;
     }
 
+    /**
+     * gets the shelter's capacity
+     * @return the shelter's capacity
+     */
     public String getCapacity() {
         return this.capacity;
     }
 
+    /**
+     * gets the shelter's phone number
+     * @return the shelter's phone number
+     */
     public String getPhoneNumber() {
         return this.phoneNumber;
     }
 
+    /**
+     * gets the shelter's latitude
+     * @return the shelter's latitude
+     */
     public String getLatitude() {
         return this.latitude;
     }
 
+    /**
+     * gets the shelter's longitude
+     * @return the shelter's longitude
+     */
     public String getLongitude() {
         return this.longitude;
     }
 
+    /**
+     * gets the shelter's restrictions
+     * @return the shelter's restrictions
+     */
     public String getRestrictions() {
         return this.restrictions;
     }
 
+    /**
+     * gets the shelter's special notes
+     * @return the shelter's special notes
+     */
     public String getSpecialNotes() {
         return this.specialNotes;
     }
 
+    /**
+     * gets the shelter's vacancies
+     * @return the shelter's vacancies
+     */
     public Vacancy getVacancies() { return this.vacancies; }
 
+    /**
+     * gets the shelter's key for the database
+     * @return the shelter's key
+     */
     public int getKey() { return this.key; }
 
+    @Override
     public String toString() { return this.getName();}
 }

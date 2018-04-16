@@ -14,5 +14,9 @@ public enum AgeCategories {
 
     AgeCategories(String ageCat) {this.ageCat = ageCat;}
 
+    /**
+     * getter method for age category
+     * @return the age category
+     */
     public String getAgeCat() {return ageCat;}
 }

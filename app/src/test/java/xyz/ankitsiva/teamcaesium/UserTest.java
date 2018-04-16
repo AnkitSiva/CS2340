@@ -18,6 +18,9 @@ public class UserTest {
 	private Shelter nullShelter;
 	private static final int BEDS = 50;
 
+	/**
+	 * sets up a user and a shelter
+	 */
 	@Before
 	public void setUp() {
 		user = new User("Kevin", "Password");
@@ -25,11 +28,11 @@ public class UserTest {
 		nullShelter = null;
 	}
 
-	/*
-	Kevin Zhu's test for User's addReservation method
+	/**
+	 * Kevin Zhu's test for User's addReservation method
 	 */
 	@Test
-	public void addReservation() throws Exception {
+	public void addReservation() {
 
 		user.addReservation(shelter, BEDS);
 		assertNotNull(user.getReservation());
@@ -47,7 +50,7 @@ public class UserTest {
 	 * Mason Baughan test of User's releaseBeds() method
 	 */
 	@Test
-	public void releaseBeds() throws Exception {
+	public void releaseBeds() {
 
 		user.addReservation(shelter, BEDS);
 		user.releaseBeds();

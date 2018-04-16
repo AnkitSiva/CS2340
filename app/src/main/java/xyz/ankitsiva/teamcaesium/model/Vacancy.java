@@ -11,11 +11,20 @@ public class Vacancy implements Parcelable{
     private final int maximum;
     private int beds;
 
+    /**
+     * constructor for a vacancy
+     * @param maximum the max number of beds allowed
+     * @param beds the beds currently available
+     */
     public Vacancy(int maximum, int beds) {
         this.maximum = maximum;
         this.beds = beds;
     }
 
+    /**
+     * reads in vacancy
+     * @param in input from another source
+     */
     public Vacancy(Parcel in) {
         maximum = in.readInt();
         beds = in.readInt();
@@ -44,6 +53,11 @@ public class Vacancy implements Parcelable{
         }
     };
 
+    /**
+     * claims beds from this vacancy
+     * @param amount the amount of beds to be claimed
+     * @return true if the beds were claimed, false if not
+     */
     public boolean claimBed(int amount) {
         if (amount <= 0) {
             return false;
@@ -56,20 +70,23 @@ public class Vacancy implements Parcelable{
         }
     }
 
+    /**
+     * releases reserved beds from this vacancy
+     * @param amount amount of beds to be released
+     */
     public void releaseBed(int amount) {
         if (amount <= 0) {
             return;
         }
         if ((beds + amount) <= maximum) {
             beds = beds + amount;
-        } else {
         }
     }
 
-    public int getMaximum() {
-        return maximum;
-    }
-
+    /**
+     * gets the number of beds available in this vacancy
+     * @return number of beds available
+     */
     public int getBeds() {
         return beds;
     }

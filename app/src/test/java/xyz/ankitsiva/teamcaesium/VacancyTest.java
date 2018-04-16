@@ -14,24 +14,21 @@ import static org.junit.Assert.*;
 
 public class VacancyTest {
 
-    private User user;
-
-    private static final int BEDS = 50;
     private Vacancy vacancy;
-    private static final int max = 200;
 
+    /**
+     * sets up a vacancy to be tested on
+     */
     @Before
     public void setUp() {
-        user = new User("vacancytest", "password");
         vacancy = new Vacancy(200, 70);
     }
 
-    /*
+    /**
      * Aryaman Vinchhi test for Vacancy's claimBed() method
      */
     @Test
-    public void claimBed() throws Exception {
-        int numBeds = vacancy.getBeds(); //70
+    public void claimBed() {
         boolean claim = vacancy.claimBed(30);
         assertEquals(vacancy.getBeds(), 40);
         assertEquals(claim, true);
@@ -45,12 +42,11 @@ public class VacancyTest {
         assertEquals(vacancy.getBeds(), 40);
     }
 
-    /*
+    /**
      * Chris Saad tests for Vacancy's releaseBed() method
      */
     @Test
-    public void releaseBed() throws Exception {
-        int numBeds = vacancy.getBeds();
+    public void releaseBed() {
         vacancy.releaseBed(20);
         assertEquals(vacancy.getBeds(), 90);
 

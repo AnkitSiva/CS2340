@@ -20,6 +20,11 @@ public class User implements Parcelable{
     @Nullable
     private Reservation reservation;
 
+    /**
+     * constructor for a user
+     * @param username the user's username
+     * @param password the user's password
+     */
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -40,6 +45,11 @@ public class User implements Parcelable{
         }
     }
 
+    /**
+     * adds a reservation to the user's account
+     * @param shelter the shelter where the reservation is
+     * @param beds the number of beds reserved
+     */
     public void addReservation(Shelter shelter, int beds) {
         if (shelter != null) {
             reservation = new Reservation(shelter, beds);
@@ -48,6 +58,9 @@ public class User implements Parcelable{
         }
     }
 
+    /**
+     * releases the user's reserved beds
+     */
     public void releaseBeds() {
         if (reservation != null) {
             reservation.releaseBeds();
@@ -57,6 +70,10 @@ public class User implements Parcelable{
         }
     }
 
+    /**
+     * constructor for user from the database
+     * @param user the user in the database
+     */
     public User(Map<String, Object> user) {
         this.username = user.get("Username").toString();
         this.password = user.get("Password").toString();
@@ -100,42 +117,77 @@ public class User implements Parcelable{
         }
     };
 
+    /**
+     * gets the user's username
+     * @return this user's username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * gets this user's password
+     * @return this user's password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * gets the shelter key of the user's reserved shelter
+     * @return the shelter key
+     */
     public String getShelterKey() {
         return shelterKey;
     }
 
+    /**
+     * gets the number of beds the user has claimed
+     * @return number of beds user has claimed
+     */
     public int getClaimed() {
         return claimed;
     }
 
+    /**
+     * gets the user's current reservation
+     * @return the user's current reservation
+     */
     @Nullable
     public Reservation getReservation() {
         return reservation;
     }
 
+    /**
+     * gets the user key for the database
+     * @return the user key
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     * sets the user's key
+     * @param key the user's new key
+     */
     public void setKey(String key) {
         this.key = key;
     }
 
-    public void setClaimed(int claimed) {
-        this.claimed = claimed;
-    }
+    /**
+     * checks if a user's username is valid
+     * @param username the username
+     * @return true if username is valid, false if not
+     */
     public boolean checkUser(String username) {
         return this.username.equals(username);
     }
 
+    /**
+     * checks if a user's password is valid
+     * @param password the password
+     * @return true if password is valid, false if not
+     */
     public boolean checkPassword(String password) {
         return this.password.equals(password);
     }
