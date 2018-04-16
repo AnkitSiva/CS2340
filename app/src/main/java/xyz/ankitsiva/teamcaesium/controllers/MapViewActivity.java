@@ -189,6 +189,10 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
+    /**
+     * Mutates markers and sets appropriate markers to visible/invisible
+     * @throws IllegalArgumentException
+     */
     public void mutateMarkers() throws IllegalArgumentException{
         if (shelterMarkers == null) {
             throw new IllegalArgumentException("Shelter markers not currently set. " +
@@ -215,10 +219,17 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+    /**
+     * Sets the shelterMarker in case of saving the user's last searched shelters
+     * @param shelterMarkers
+     */
     public void setShelterMarkers(Map<Shelter, Marker> shelterMarkers) {
         this.shelterMarkers = shelterMarkers;
     }
 
+    /**
+     * Returns the shelterMarker in case of saving the user's last searched shelters
+     */
     public Map<Shelter, Marker> getShelterMarkers() {
         return shelterMarkers;
     }
@@ -239,10 +250,18 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         return false;
     }
 
+    /**
+     * Sets user's chosen gender
+     * @param choice
+     */
     public void setChosenGender(String choice) {
         chosenGender[0] = choice;
     }
 
+    /**
+     * Sets user's chosen age
+     * @param choice
+     */
     public void setChosenAge(String choice) {
         chosenAge[0] = choice;
     }

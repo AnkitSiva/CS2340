@@ -68,7 +68,6 @@ public class ShelterViewActivity extends AppCompatActivity {
         listView = findViewById(R.id.listview);
         shelterList = new ArrayList<>();
         userQuery[0] = "";
-        final ArrayList<Shelter> backup = shelterList;
         EditText inputSearch = findViewById(R.id.inputSearch);
 
         Spinner ageSpinner = findViewById(R.id.ageSpinner);

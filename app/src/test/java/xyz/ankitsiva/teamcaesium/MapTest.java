@@ -13,16 +13,26 @@ import xyz.ankitsiva.teamcaesium.model.Shelter;
 
 import static org.junit.Assert.*;
 
+/**
+ * Created by Ankit
+ * Tests MapViewActivity's mutateMarkers()
+ */
 public class MapTest {
     MapViewActivity mva;
     private Map<Shelter, Marker> nullShelterMarkerMap;
     private Map<Shelter, Marker> emptyShelterMarkerMap;
 
+    /**
+     * Sets up the test
+     */
 	@Before
 	public void setUp() {
 		mva = new MapViewActivity();
 	}
 
+    /**
+     * Tests with an empty marker map
+     */
 	@Test
 	public void testEmptyMarkerMap() {
         emptyShelterMarkerMap = new HashMap<>();
@@ -31,6 +41,9 @@ public class MapTest {
                 mva.getShelterMarkers().keySet().toArray());
     }
 
+    /**
+     * Tests with null gender choice
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testNullGenderChoice() {
 	    String nullChoice = null;
@@ -39,6 +52,9 @@ public class MapTest {
 
     }
 
+    /**
+     * Tests with null age choice
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testNullAgeChoice() {
         String nullChoice = null;
@@ -47,6 +63,9 @@ public class MapTest {
 
     }
 
+    /**
+     * Tests with null marker map
+     */
 	@Test(expected = IllegalArgumentException.class)
     public void testNullMarkers() {
 	    nullShelterMarkerMap = null;
