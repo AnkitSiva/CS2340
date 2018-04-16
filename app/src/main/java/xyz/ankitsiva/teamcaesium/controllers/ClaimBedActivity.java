@@ -81,6 +81,15 @@ public class ClaimBedActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text2, duration);
             toast.show();
         }
+
+        checkVacancy(num);
+    }
+
+    /**
+     * Checks out beds
+     * @param num the number of beds
+     */
+    private void checkVacancy(int num) {
         if (!vacancy.claimBed(num)) {
             Context context = getApplicationContext();
             CharSequence text2 = "Unable to claim beds";
