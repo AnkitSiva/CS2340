@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="Calm" tools:keep="@color/Calm">#52b2d5</color>
+    <color name="primary_material_dark">#2a9d8f</color>
+    <color name="accent_material_dark">#f4a261</color>
+    <color name="primary_dark_material_dark">#031927</color>
 </resources>

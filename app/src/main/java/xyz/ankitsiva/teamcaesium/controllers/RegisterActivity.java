@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     private DatabaseReference mDatabase;
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
-            new GenericTypeIndicator<>();
+            new GenericTypeIndicator<ArrayList<HashMap<String,Object>>>() {};
     private ArrayList<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private List<User> userList;

@@ -24,15 +24,18 @@
         <activity
             android:name=".controllers.LoginActivity"
             android:label="@string/action_sign_in_short"
-            android:parentActivityName=".controllers.WelcomeActivity" />
-        <activity android:name=".controllers.WelcomeActivity">
+            android:parentActivityName=".controllers.WelcomeActivity"
+            android:theme="@style/AnkitsExperimental" />
+        <activity android:name=".controllers.WelcomeActivity"
+            android:theme="@style/AnkitsExperimental">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.MainActivity" />
+        <activity android:name=".controllers.MainActivity"
+            android:theme="@style/AnkitsExperimental" />
         <activity
             android:name=".controllers.RegisterActivity"
             android:label="@string/title_activity_register"

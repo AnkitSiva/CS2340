@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Team Caesium</string>
+    <string name="app_name">Shelter Find</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email" tools:keep="@string/prompt_email">Email</string>
