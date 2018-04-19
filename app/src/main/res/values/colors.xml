@@ -6,5 +6,14 @@
     <color name="Calm" tools:keep="@color/Calm">#52b2d5</color>
     <color name="primary_material_dark">#2a9d8f</color>
     <color name="accent_material_dark">#f4a261</color>
-    <color name="primary_dark_material_dark">#031927</color>
+    <color name="primary_dark_material_dark">#042234</color>
+    <color name="accent_material_light">#f4a261</color>
+    <color name="background_material_light">#031927</color>
+    <color name="foreground_material_light">#882323</color>
+    <color name="background_material_dark_ankit">#031927</color>
+    <color name="background_material_light_ankit">#031927</color>
+    <color name="light_blue_text">#75b9be</color>
+    <color name="ankit_text_light">#c3c4c4</color>
+    <color name="ankit_text">#3557a6</color>
+    <color name="secondary_text_material_dark">#e2cfcfcf</color>
 </resources>

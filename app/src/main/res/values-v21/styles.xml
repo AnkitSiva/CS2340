@@ -5,5 +5,10 @@
         <item name="android:colorPrimary">@color/primary_material_dark</item>
         <item name="android:colorAccent">@color/accent_material_dark</item>
         <item name="android:colorPrimaryDark">@color/primary_dark_material_dark</item>
+        <item name = "android:colorBackground">@color/background_material_dark_ankit</item>
+        <item name="android:textColorPrimary">@android:color/background_light</item>
+        <item name="android:colorForeground">@color/foreground_material_light</item>
+        <item name="android:textColorSecondary">?attr/colorControlActivated</item>
+        <item name="android:textColorSecondaryInverse">@android:color/holo_red_light</item>
     </style>
 </resources>
