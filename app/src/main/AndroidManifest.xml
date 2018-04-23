@@ -46,6 +46,7 @@
         </activity>
         <activity
             android:name=".controllers.ShelterViewActivity"
+            android:theme="@style/AnkitsExperimental"
             android:label="@string/action_view_shelters"
             android:parentActivityName=".controllers.MainActivity"
             android:windowSoftInputMode="stateHidden">
@@ -59,15 +60,18 @@
         </activity>
         <activity
             android:name=".controllers.ShelterContentActivity"
+            android:theme="@style/AnkitsExperimental"
             android:label="@string/action_show_content"
             android:parentActivityName=".controllers.ShelterViewActivity" />
         <activity
             android:name=".controllers.ClaimBedActivity"
+            android:theme="@style/AnkitsExperimental"
             android:parentActivityName=".controllers.ShelterContentActivity"
             android:inputType="number">
         </activity>
         <activity
             android:name=".controllers.MapViewActivity"
+            android:theme="@style/AnkitsExperimental"
             android:parentActivityName=".controllers.MainActivity">
         </activity>
     </application>

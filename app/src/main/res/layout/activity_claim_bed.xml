@@ -25,7 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="39dp"
             android:text="@string/vacancy_count"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="?attr/editTextColor" />
 
         <EditText
             android:id="@+id/NumberBeds"
@@ -35,7 +36,9 @@
             android:ems="10"
             android:hint="@string/select_number_vacancies"
             android:inputType="numberSigned"
-            android:numeric="integer" />
+            android:numeric="integer"
+            android:textColor="?attr/actionMenuTextColor"
+            android:textColorHint="?android:attr/colorActivatedHighlight" />
 
         <Button
             android:id="@+id/ClaimButton"
@@ -44,8 +47,11 @@
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:layout_marginTop="20dp"
+            android:background="?attr/colorPrimary"
             android:onClick="claimBed"
-            android:text="@string/claim" />
+            android:text="@string/claim"
+            android:textColorHighlight="?android:attr/colorActivatedHighlight"
+            android:textColorHint="@color/ankit_text" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
