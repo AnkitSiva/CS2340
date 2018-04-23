@@ -357,7 +357,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void lockoutDialog() {
         AlertDialog.Builder ab = new AlertDialog.Builder(context);
         ab.setTitle("3 Failed Login Attempts");
-        ab.setMessage("Locked out of account for 5 minutes");
+        ab.setMessage("do some reset shit here");
         ab.setCancelable(false);
         AlertDialog dialog = ab.create();
         dialog.show();
@@ -412,10 +412,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 loginCount++;
-                if (loginCount >= 3) {
-                    lockoutDialog();
-                }
                 mPasswordView.requestFocus();
+            }
+            if (loginCount >= 3) {
+                lockoutDialog();
             }
         }
 
