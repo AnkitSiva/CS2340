@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -52,12 +51,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executor;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.User;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
@@ -65,11 +61,6 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>,
         AdapterView.OnItemSelectedListener {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-    private static final int SLEEPTIME = 2000;
     private FirebaseAuth firebaseAuth;
 
     /**
@@ -95,11 +86,13 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ArrayAdapter<CharSequence> userTypeSpinnerAdapter;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setupActionBar();
         firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser()!= null) {
+
+        }
         // Set up the login form.
         mNameView = findViewById(R.id.name);
         mEmailView = findViewById(R.id.email);
@@ -128,52 +121,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        Spinner userTypeSpinner = findViewById(R.id.userType);
-        userTypeSpinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.userTypes_array, R.layout.support_simple_spinner_dropdown_item);
-        userTypeSpinnerAdapter.setDropDownViewResource(R.layout.
-                support_simple_spinner_dropdown_item);
-        userTypeSpinner.setAdapter(userTypeSpinnerAdapter);
-        userTypeSpinner.setOnItemSelectedListener(this);
-
-        userList = new ArrayList<>();
-        mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
-                "https://cs2340-49af4.firebaseio.com/");
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                dataList =  dataSnapshot.child("users").getValue(t);
-                dataIterator = Objects.requireNonNull(dataList).iterator();
-                while (dataIterator.hasNext()) {
-                    User user = new User(dataIterator.next());
-                    userList.add(user);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Failed to read value
-                Log.w("Login", "Failed to read value.", databaseError.toException());
-            }
-        });
     }
 
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if ((grantResults.length == 1) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                populateAutoComplete();
-            }
-        }
     }
 
     /**
