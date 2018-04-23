@@ -3,7 +3,9 @@ package xyz.ankitsiva.teamcaesium.controllers;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -42,6 +44,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.User;
 
@@ -57,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final int SLEEPTIME = 2000;
+    private final Context context = this;
+    private static int loginCount = 0;
 
     private final GenericTypeIndicator<ArrayList<HashMap<String, Object>>> t =
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
@@ -233,7 +238,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
+            loginCount++;
             focusView.requestFocus();
+            if (loginCount >= 3) {
+                // lock the user out
+                lockoutDialog();
+                System.out.println("LOGIN COUNT WORKING");
+                System.out.println(loginCount);
+            }
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
@@ -242,6 +254,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask.execute((Void) null);
         }
     }
+
+
 
     private boolean isEmailValid(String email) {
         return !email.isEmpty();
@@ -340,6 +354,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int ADDRESS = 0;
     }
 
+    private void lockoutDialog() {
+        AlertDialog.Builder ab = new AlertDialog.Builder(context);
+        ab.setTitle("3 Failed Login Attempts");
+        ab.setMessage("Locked out of account for 5 minutes");
+        ab.setCancelable(false);
+        AlertDialog dialog = ab.create();
+        dialog.show();
+    }
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
@@ -373,9 +396,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     return user.checkPassword(mPassword);
                 }
             }
-
             return false;
         }
+
+
 
         @Override
         protected void onPostExecute(final Boolean success) {
@@ -387,6 +411,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
+                loginCount++;
+                if (loginCount >= 3) {
+                    lockoutDialog();
+                }
                 mPasswordView.requestFocus();
             }
         }
