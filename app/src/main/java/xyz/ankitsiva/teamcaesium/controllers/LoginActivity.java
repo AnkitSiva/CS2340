@@ -34,6 +34,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
@@ -63,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private List<HashMap<String, Object>> dataList;
     private Iterator<HashMap<String, Object>> dataIterator;
     private List<User> userList;
-
+    private FirebaseAuth firebaseAuth;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -84,6 +85,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
         populateAutoComplete();
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -370,7 +373,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     // Account exists, return true if the password matches.
                     intent.putExtra("User", user);
                     Log.d("LoginActivity", "Shelter key is " + user.getShelterKey());
-                    return user.checkPassword(mPassword);
                 }
             }
 

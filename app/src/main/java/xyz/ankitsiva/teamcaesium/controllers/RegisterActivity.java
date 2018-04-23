@@ -34,19 +34,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executor;
 
 import xyz.ankitsiva.teamcaesium.R;
 import xyz.ankitsiva.teamcaesium.model.User;
@@ -64,6 +70,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final int SLEEPTIME = 2000;
+    private FirebaseAuth firebaseAuth;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -92,6 +99,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setupActionBar();
+        firebaseAuth = FirebaseAuth.getInstance();
         // Set up the login form.
         mNameView = findViewById(R.id.name);
         mEmailView = findViewById(R.id.email);
@@ -150,43 +158,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             }
         });
     }
-    private void writeNewUser(String userId, User user) {
-
-        mDatabase.child("users").child(userId).child("Username").setValue(user.getUsername());
-        mDatabase.child("users").child(userId).child("Password").setValue(user.getPassword());
-        mDatabase.child("users").child(userId).child("Beds").setValue(0);
-        mDatabase.child("users").child(userId).child("Key").setValue(userId);
-        mDatabase.child("users").child(userId).child("Shelter").setValue("-1");
-    }
 
     private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
         getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
     }
 
     /**
@@ -413,10 +387,21 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             }
 
             if (mConfirmPassword.equals(mPassword)) {
-                User newUser = new User(mEmail, mPassword);
-                userList.add(newUser);
-                newUser.setKey(Integer.toString(userList.indexOf(newUser)));
-                writeNewUser(Integer.toString(userList.indexOf(newUser)), newUser);
+                firebaseAuth.createUserWithEmailAndPassword(mEmail, mPassword)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                //checking if success
+                                if(task.isSuccessful()){
+                                    //display some message here
+                                    Toast.makeText(getApplication().getApplicationContext(),"Successfully registered",Toast.LENGTH_LONG).show();
+                                }else{
+                                    //display some message here
+                                    Toast.makeText(getApplicationContext(),"Registration Error", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                User newUser = new User(mEmail);
                 intent.putExtra("User", newUser);
                 return true;
             }
