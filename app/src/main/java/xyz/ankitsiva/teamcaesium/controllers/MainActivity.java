@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             new GenericTypeIndicator<ArrayList<HashMap<String, Object>>>() {};
     private List<Shelter> shelterList;
     private DatabaseReference mDatabase;
+    private Button viewUsersButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mText = findViewById(R.id.welcomeText);
         mVacancyText = findViewById(R.id.ReservationText);
         name = user.getUsername();
-        userType = "user";
+        userType = user.getType();
         shelterList = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl(
                 "https://cs2340-49af4.firebaseio.com/");
@@ -75,7 +77,13 @@ public class MainActivity extends AppCompatActivity {
                 if (!"-1".equals(user.getShelterKey())) {
                     shelter = shelterList.get(Integer.parseInt(user.getShelterKey()));
                 }
+                viewUsersButton = (Button) findViewById(R.id.ViewUsersButton);
                 setAllText();
+                if ("Admin".equals(userType)) {
+                    viewUsersButton.setVisibility(View.VISIBLE);
+                } else {
+                    viewUsersButton.setVisibility(View.GONE);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -163,6 +171,12 @@ public class MainActivity extends AppCompatActivity {
      */
     public void viewShelterMap(View view) {
         Intent intent = new Intent(this, MapViewActivity.class);
+        intent.putExtra("User", user);
+        startActivityForResult(intent, 1);
+    }
+
+    public void viewUsers(View view) {
+        Intent intent = new Intent(this, ViewUsersActivity.class);
         intent.putExtra("User", user);
         startActivityForResult(intent, 1);
     }

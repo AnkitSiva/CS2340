@@ -16,6 +16,8 @@ public class User implements Parcelable{
     private String key;
     private String shelterKey;
     private int claimed;
+    private String type;
+    private String banned;
 
     @Nullable
     private Reservation reservation;
@@ -28,7 +30,9 @@ public class User implements Parcelable{
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.type = "User";
         shelterKey = "-1";
+        banned = "Not Banned";
     }
 
     private class Reservation {
@@ -80,6 +84,8 @@ public class User implements Parcelable{
         this.key = user.get("Key").toString();
         this.shelterKey = user.get("Shelter").toString();
         this.claimed = Integer.parseInt(user.get("Beds").toString());
+        this.type = user.get("Type").toString();
+        this.banned = user.get("Banned").toString();
     }
 
     private User(Parcel in) {
@@ -88,6 +94,8 @@ public class User implements Parcelable{
         key = in.readString();
         shelterKey = in.readString();
         claimed = in.readInt();
+        type = in.readString();
+        banned = in.readString();
     }
 
     @Override
@@ -102,6 +110,8 @@ public class User implements Parcelable{
         out.writeString(key);
         out.writeString(shelterKey);
         out.writeInt(claimed);
+        out.writeString(type);
+        out.writeString(banned);
     }
 
     public static final Parcelable.Creator<User> CREATOR
@@ -166,6 +176,13 @@ public class User implements Parcelable{
         return key;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public String getBanned() {
+        return banned;
+    }
     /**
      * sets the user's key
      * @param key the user's new key

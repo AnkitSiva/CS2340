@@ -383,8 +383,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                startActivity(intent);
-                finish();
+
+                if ("Banned".equals(((User) intent.getParcelableExtra("User")).getBanned())) {
+                    mEmailView.setError("This user is banned");
+                    mEmailView.requestFocus();
+                } else {
+                    startActivity(intent);
+                    finish();
+                }
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

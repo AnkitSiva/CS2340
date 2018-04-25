@@ -157,6 +157,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mDatabase.child("users").child(userId).child("Beds").setValue(0);
         mDatabase.child("users").child(userId).child("Key").setValue(userId);
         mDatabase.child("users").child(userId).child("Shelter").setValue("-1");
+        mDatabase.child("users").child(userId).child("Type").setValue("User");
+        mDatabase.child("users").child(userId).child("Banned").setValue("Not Banned");
     }
 
     private void populateAutoComplete() {

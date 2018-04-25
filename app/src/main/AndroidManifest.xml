@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,12 +20,14 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".controllers.LoginActivity"
             android:label="@string/action_sign_in_short"
             android:parentActivityName=".controllers.WelcomeActivity"
             android:theme="@style/AnkitsExperimental" />
-        <activity android:name=".controllers.WelcomeActivity"
+        <activity
+            android:name=".controllers.WelcomeActivity"
             android:theme="@style/AnkitsExperimental">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +35,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.MainActivity"
+        <activity
+            android:name=".controllers.MainActivity"
             android:theme="@style/AnkitsExperimental" />
         <activity
             android:name=".controllers.RegisterActivity"
@@ -46,7 +48,6 @@
         </activity>
         <activity
             android:name=".controllers.ShelterViewActivity"
-            android:theme="@style/AnkitsExperimental"
             android:label="@string/action_view_shelters"
             android:parentActivityName=".controllers.MainActivity"
             android:windowSoftInputMode="stateHidden">
@@ -60,19 +61,19 @@
         </activity>
         <activity
             android:name=".controllers.ShelterContentActivity"
-            android:theme="@style/AnkitsExperimental"
             android:label="@string/action_show_content"
             android:parentActivityName=".controllers.ShelterViewActivity" />
         <activity
             android:name=".controllers.ClaimBedActivity"
-            android:theme="@style/AnkitsExperimental"
-            android:parentActivityName=".controllers.ShelterContentActivity"
-            android:inputType="number">
-        </activity>
+            android:inputType="number"
+            android:parentActivityName=".controllers.ShelterContentActivity"></activity>
         <activity
             android:name=".controllers.MapViewActivity"
-            android:theme="@style/AnkitsExperimental"
+            android:parentActivityName=".controllers.MainActivity"></activity>
+        <activity
+            android:name=".controllers.ViewUsersActivity"
             android:parentActivityName=".controllers.MainActivity">
         </activity>
     </application>
+
 </manifest>

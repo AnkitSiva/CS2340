@@ -51,6 +51,7 @@
         android:gravity="center_horizontal"
         android:text="@string/app_name"
         android:textColor="@color/Calm"
+        android:textColorHighlight="@color/Calm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +84,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="?attr/colorPrimary"
         android:onClick="releaseBeds"
         android:text="@string/action_release_beds"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -100,7 +100,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="?attr/colorPrimary"
         android:onClick="viewShelterMap"
         android:text="View Map"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -108,5 +107,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.559" />
+
+    <Button
+        android:id="@+id/ViewUsersButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="viewUsers"
+        android:text="@string/action_show_users"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.971"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.017" />
 
 </android.support.constraint.ConstraintLayout>
